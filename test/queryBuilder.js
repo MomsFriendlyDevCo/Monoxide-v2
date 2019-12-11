@@ -70,7 +70,7 @@ describe('monoxide QueryBuilder', function() {
 			.then(res => expect(res).to.equal(3))
 	);
 
-	it.only('should have access to virtuals, statics and methods', ()=>
+	it('should have access to virtuals, statics and methods', ()=>
 		monoxide.collections.users
 			.find({status: 'active'})
 			.then(res => {
