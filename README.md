@@ -7,7 +7,8 @@ The currently active version of Monoxide [can be found here](https://github.com/
 **Features:**
 * (Almost) Zero reliance on Mongoose - This module is as close to the Mongo metal as possible for speed and compatibility reasons
 * Can trap calls to all functions via the Debug NPM (see [below](#debugging))
-* (FIXME) Express compatible ReST server out-of-the-box
+* Everything is a promise. Absolutely no callbacks at all, anywhere
+* Express compatible ReST server out-of-the-box
 * Schemas are validated at JS native level
 * Statics / Methods / Virtuals support
 * The `value` schema field can force a value to be set on each write operation - e.g. `{edited: {type: 'date', value: (doc, iter, docPath, schemaPath) => new Date()}}`
@@ -21,7 +22,7 @@ The currently active version of Monoxide [can be found here](https://github.com/
 * [ ] ReST server
 * [x] Scenario support
 * [ ] Collection.createCollection()
-* [ ] Collection.dropCollection()
+* [x] Collection.dropCollection()
 * [x] Collection.static()
 * [ ] Collection.virtual()
 * [ ] Collection.method()

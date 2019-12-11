@@ -94,7 +94,12 @@ var setup = module.exports = {
 
 	// teardownSchemas {{{
 	teardownSchemas() {
-		return monoxide.dropDatabase();
+		return Promise.all(
+			Object.keys(monoxide.collections).map(collectionName =>
+				monoxide.collections[collectionName].dropCollection()
+			)
+		)
+		.then(()=> monoxide.dropDatabase())
 	},
 	// }}}
 };
