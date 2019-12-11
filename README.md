@@ -27,6 +27,7 @@ The currently active version of Monoxide [can be found here](https://github.com/
 * [ ] Model.method()
 * [ ] Model.emit() / Model.on()
 * [ ] Model.serve properties: queryForce, queryValidate
+* [ ] model.delete{One,Many,OneByID}
 * [ ] schemaAttribute.value()
 * [ ] Schema creation
 * [ ] Schema validation
@@ -173,6 +174,25 @@ Create a single document.
 Returns a promise.
 
 
+model.deleteOne(query)
+----------------------
+Delete the first document matching the given query.
+Returns a promise.
+
+
+model.deleteOneById(doc)
+------------------------
+Delete a single document by its ID.
+Returns a promise.
+
+
+model.deleteMany(query)
+-----------------------
+Delete all docs matching the given query.
+Returns a promise.
+
+
+
 model.find(query)
 -----------------
 Create a QueryBuilder instance with an initially populated query.
@@ -232,8 +252,8 @@ monoxide.model.users.virtual('fullName', doc => doc.firstName + ' ' + doc.lastNa
 ```
 
 
-model.dropCollection
---------------------
+model.dropCollection()
+----------------------
 Drop the table from the database.
 Returns a promise.
 
