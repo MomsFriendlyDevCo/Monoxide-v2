@@ -61,7 +61,7 @@ var setup = module.exports = {
 			})
 			.virtual('password',
 				()=> 'RESTRICTED',
-				doc => { // Very crappy, yet predictable password hasher that removes all consonants
+				(pass, doc) => { // Very crappy, yet predictable password hasher that removes all consonants
 					doc._password = pass
 						.toLowerCase()
 						.replace(/[^aeiou]+/g, '');

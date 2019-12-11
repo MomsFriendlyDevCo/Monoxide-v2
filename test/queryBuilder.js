@@ -87,6 +87,11 @@ describe('monoxide QueryBuilder', function() {
 					// Access the password virtual
 					expect(doc).to.have.property('password', 'RESTRICTED');
 
+					// Access the password strength calculation
+					expect(doc).to.have.property('passwordStrength');
+					doc.password = 'hello_world_and_other_planets';
+					expect(doc).to.have.property('passwordStrength', 8);
+
 					// Call the greet() method on the document
 					expect(doc).to.have.property('greet');
 					expect(doc.greet).to.be.a('function');
