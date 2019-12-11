@@ -9,7 +9,7 @@ describe('monoxide QueryBuilder', function() {
 	after(testSetup.teardown);
 
 	it('should return an aggregation cursor via .find().cursor()', ()=>
-		monoxide.models.users
+		monoxide.collections.users
 			.find()
 			.limit(2)
 			.cursor()
@@ -34,7 +34,7 @@ describe('monoxide QueryBuilder', function() {
 	);
 
 	it('should perform a simple query via .find()', ()=>
-		monoxide.models.users
+		monoxide.collections.users
 			.find()
 			.then(res => {
 				expect(res).to.be.an('array');
@@ -43,7 +43,7 @@ describe('monoxide QueryBuilder', function() {
 	);
 
 	it('should perform a simple query via .findOne()', ()=>
-		monoxide.models.users
+		monoxide.collections.users
 			.findOne({name: 'Joe Random'})
 			.then(res => {
 				expect(res).to.be.an('object');
@@ -53,7 +53,7 @@ describe('monoxide QueryBuilder', function() {
 	);
 
 	it('should perform a simple query via .find({status: \'active\'})', ()=>
-		monoxide.models.users
+		monoxide.collections.users
 			.find({status: 'active'})
 			.then(res => {
 				expect(res).to.be.an('array');
@@ -69,7 +69,7 @@ describe('monoxide QueryBuilder', function() {
 	);
 
 	it('should perform a count query via .find({status: \'active\'})', ()=>
-		monoxide.models.users
+		monoxide.collections.users
 			.count({status: 'active'})
 			.then(res => expect(res).to.equal(3))
 	);

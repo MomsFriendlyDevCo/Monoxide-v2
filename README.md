@@ -20,14 +20,13 @@ The currently active version of Monoxide [can be found here](https://github.com/
 * [ ] Testkits
 * [ ] ReST server
 * [x] Scenario support
-* [ ] Model.createCollection()
-* [ ] Model.dropCollection()
-* [x] Model.static()
-* [ ] Model.virtual()
-* [ ] Model.method()
-* [ ] Model.emit() / Model.on()
-* [ ] Model.serve properties: queryForce, queryValidate
-* [ ] model.delete{One,Many,OneByID}
+* [ ] Collection.createCollection()
+* [ ] Collection.dropCollection()
+* [x] Collection.static()
+* [ ] Collection.virtual()
+* [ ] Collection.method()
+* [ ] Collection.serve properties: queryForce, queryValidate
+* [ ] Collection.delete{One,Many,OneByID}
 * [ ] schemaAttribute.value()
 * [ ] Schema creation
 * [ ] Schema validation
@@ -54,9 +53,9 @@ monoxide
 Main instance of the Monoxide database driver.
 
 
-monoxide.models
----------------
-Object for all loaded models.
+monoxide.collections
+--------------------
+Object for all loaded collections.
 
 
 monoxide.connect(uri, options)
@@ -73,14 +72,14 @@ Returns a promise.
 
 monoxide.init()
 ---------------
-Function which waits for all models to finish loading.
+Function which waits for all collections to finish loading.
 This should be called after `.connect()` and before any collections are used.
 Returns a promise.
 
 
 monoxide.schema(name, schema, options)
 ---------------------------------
-Declare a model schema. All models are automatically available via `monoxide.models`.
+Declare a collections schema. All collections are automatically available via `monoxide.collections`.
 
 Each schema entry has the following properties:
 
@@ -103,14 +102,14 @@ Each schema entry has the following properties:
 * If present the `value` function is called as `(doc, iter, docPath, schemaPath)` where doc is the current document and iter is the iterable context. For example if the value is being set inside an array of 3 items it will be called three times with the doc being the same and iter being all occurances of that value being calculated - each array value
 
 
-See [model](#model) for available model options.
+See [collections](#collections) for available collections options.
 
 
 monoxide.schemaType(id, definition)
 --------------------------------
 Declare a custom schema type.
 If supplied with an object it is used as the default specification of a single schema item (i.e. doesn't overwrite existing fields).
-If a function is supplied it is called as `(schemaNode, model, monoxide)` and expected to mutate the schemaNode in place.
+If a function is supplied it is called as `(schemaNode, collections, monoxide)` and expected to mutate the schemaNode in place.
 Returns the chainable Monoxide instance.
 
 
@@ -147,7 +146,7 @@ Options are:
 
 | Option       | Type       | Default | Description                                                                           |
 |--------------|------------|---------|---------------------------------------------------------------------------------------|
-| `postCreate` | `function` |         | Function to run whenever a document is created, called as `(modelId, count)`          |
+| `postCreate` | `function` |         | Function to run whenever a document is created, called as `(collectionName, count)`   |
 | `postRead`   | `function` | `v=>v`  | A (promisable) function which can mutate the combined object schema before processing |
 | `postStats`  | `function` |         | Called when all processing has finished with a stats object for how many of each record were created |
 | `nuke`       | `boolean`  | `false` | Remove + recreate each table in the final schema before processing                    |
@@ -155,105 +154,103 @@ Options are:
 
 
 
-model
------
-A monoxide model which was registered via `monoxide.schema(name, schema)`.
-Note that the model is not actually ready to be used until `model.createTable()` or `monoxide.init()` have been called.
+collection
+----------
+A monoxide collection which was registered via `monoxide.schema(name, schema)`.
+Note that the collection is not actually ready to be used until `collection.createTable()` or `monoxide.init()` have been called.
 
 
-model.createTable()
--------------------
+collection.createTable()
+------------------------
 Create the collection within Mongo and prepare it to be used.
-This function is called on all models via `monoxide.init()`.
+This function is called on all collections via `monoxide.init()`.
 Returns a promise.
 
 
-model.create(doc, options)
---------------------------
+collection.create(doc)
+----------------------
 Create a single document.
 Returns a promise.
 
 
-model.deleteOne(query)
-----------------------
+collection.deleteOne(query)
+---------------------------
 Delete the first document matching the given query.
 Returns a promise.
 
 
-model.deleteOneById(doc)
-------------------------
+collection.deleteOneById(doc)
+-----------------------------
 Delete a single document by its ID.
 Returns a promise.
 
 
-model.deleteMany(query)
------------------------
+collection.deleteMany(query)
+----------------------------
 Delete all docs matching the given query.
 Returns a promise.
 
 
-
-model.find(query)
------------------
+collection.find(query)
+----------------------
 Create a QueryBuilder instance with an initially populated query.
 Acts like a promise.
 
 
-model.findOne(query)
---------------------
-Shorthand for `model.find(query).one()`.
+collection.findOne(query)
+-------------------------
+Shorthand for `collection.find(query).one()`.
 
 
-model.findOneByID(query)
-------------------------
-Shorthand for `model.find({[model.settings.idField]: id}).one()`.
+collection.findOneByID(query)
+-----------------------------
+Shorthand for `collection.find({_id: id}).one()`.
 
 
-model.count(query)
-------------------
-Shorthand for `model.find({[model.settings.idField]: id}).count()`.
+collection.count(query)
+-----------------------
+Shorthand for `collection.find(query).count()`.
 
 
-model.static(name, func)
-------------------------
-Extend a monoxideModel to include the named function. This is really just an easier way of handling mixins with models.
+collection.static(name, func)
+-----------------------------
+Extend a MonoxideCollection to include the named function.
+This is really just an easier way of handling mixins with collections.
 
 ```javascript
 // Create another way of counting users
-monoxide.models.users.static('countUsers', ()=> monoxide.model.users.count());
+monoxide.collections.users.static('countUsers', ()=> monoxide.collection.users.count());
 
-monoxide.models.users.countUsers(); //= {Promise <Number>}
+monoxide.collections.users.countUsers(); //= {Promise <Number>}
 ```
 
 
-model.method(name, func)
-------------------------
+collection.method(name, func)
+-----------------------------
 Extend a monoxideDocument instance to include the named function. This function is effecively glued onto and documents returned via `find` (or its brethren).
 
 ```javascript
 // Set the users status to invalid via a method
-my.model.users.method('setInvalid', function() {
-	this.status = 'invalid';
-});
+monoxide.collections.users.method('setInvalid', doc => doc.status = 'invalid');
 
-my.models.users.findOne({username: 'bad@user.com'})
+monoxide.collections.users.findOne({username: 'bad@user.com'})
 	.then(user => user.setInvalid())
 ```
 
 
-model.virtual(name, getter, setter)
------------------------------------
+collection.virtual(name, getter, setter)
+----------------------------------------
 Define a virtual field which acts like a getter / setter when accessed.
 All virtual methods are called as `(doc)` and expected to return a value which is assigned to their field.
 
 
 ```javascript
-monoxide.model.users.virtual('fullName', doc => doc.firstName + ' ' + doc.lastName);
+monoxide.collection.users.virtual('fullName', doc => doc.firstName + ' ' + doc.lastName);
 ```
 
 
-model.dropCollection()
-----------------------
+collection.dropCollection()
+---------------------------
 Drop the table from the database.
 Returns a promise.
 

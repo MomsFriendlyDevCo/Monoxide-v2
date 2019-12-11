@@ -7,10 +7,10 @@ function Monoxide() {
 
 	// Classes {{{
 	o.classes = {
+		Collection: require('./lib/collection'),
 		Cursor: require('./lib/cursor'),
 		Document: require('./lib/document'),
 		Defer: require('./lib/defer'),
-		Model: require('./lib/model'),
 		QueryBuilder: require('./lib/queryBuilder'),
 		Scenario: require('./lib/scenario'),
 	};
@@ -46,21 +46,21 @@ function Monoxide() {
 		.then(()=> debug('Disconnected'));
 	// }}}
 
-	// Models and schemas {{{
+	// Collections and schemas {{{
 	/**
-	* Object lookup for models
+	* Object lookup for collections
 	* @var {Object}
 	*/
-	o.models = {};
+	o.collections = {};
 
 
 	/**
-	* Declare a models schema
-	* @param {string} name The name of the model
-	* @param {Object} spec The specification of the model
-	* @returns {MonoxideModel} The created model instance
+	* Declare a collection schema
+	* @param {string} name The name of the collection
+	* @param {Object} spec The specification of the collection
+	* @returns {MonoxideCollection} The created collection instance
 	*/
-	o.schema = (name, spec) => o.models[name] = new o.classes.Model(o, name, spec);
+	o.schema = (name, spec) => o.collections[name] = new o.classes.Collection(o, name, spec);
 
 
 
@@ -69,9 +69,9 @@ function Monoxide() {
 	* @returns {Promise} A promise which will resolve when all collections are ready
 	*/
 	o.init = ()=> Promise.resolve()
-		.then(()=> debug(`Init ${Object.keys(o.models).length} models`))
+		.then(()=> debug(`Init ${Object.keys(o.collections).length} collections`))
 		.then(()=> Promise.all(
-			Object.keys(o.models).map(modelName => o.models[modelName].createCollection())
+			Object.keys(o.collections).map(collectionName => o.collections[collectionName].createCollection())
 		))
 		.then(()=> debug('All collections ready'));
 
