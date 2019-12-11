@@ -24,12 +24,11 @@ The currently active version of Monoxide [can be found here](https://github.com/
 * [ ] Collection.createCollection()
 * [x] Collection.dropCollection()
 * [x] Collection.static()
-* [ ] Collection.virtual()
-* [ ] Collection.method()
+* [x] Collection.virtual()
+* [x] Collection.method()
 * [ ] Collection.serve properties: queryForce, queryValidate
 * [ ] Collection.delete{One,Many,OneByID}
-* [ ] schemaAttribute.value()
-* [ ] Schema creation
+* [x] Schema defaults
 * [ ] Schema validation
 
 
@@ -93,8 +92,6 @@ Each schema entry has the following properties:
 | `trim`         | Boolean             | `false` | With strings, remove all surrounding whitespace                                               |
 | `validate`     | Function, RegExp, * |         | Specify a validation function to run when setting the value                                   |
 | `enum`         | Array <String>      |         | Specify valid options with a string                                                           |
-| `set`          | Function            |         | Function to transform the given value before DB write                                         |
-| `get`          | Function            |         | Function to transform the raw DB value before passing it to the application                   |
 
 
 **Notes:**

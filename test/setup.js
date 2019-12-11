@@ -61,13 +61,14 @@ var setup = module.exports = {
 			})
 			.virtual('password',
 				()=> 'RESTRICTED',
-				pass => { // Very crappy, yet predictable password hasher that removes all consonants
-					this._password = pass
+				doc => { // Very crappy, yet predictable password hasher that removes all consonants
+					doc._password = pass
 						.toLowerCase()
 						.replace(/[^aeiou]+/g, '');
 				}
 			)
-			.virtual('passwordStrength', ()=> this._password.length || 0) // Returns the length of the (badly, see above) hashed password which is an approximate indicator of hash strength
+			.virtual('passwordStrength', doc => doc._password.length || 0) // Returns the length of the (badly, see above) hashed password which is an approximate indicator of hash strength
+			.method('greet', doc => `${doc.settings.greeting} ${doc.name}`)
 		// }}}
 
 		// Companies {{{

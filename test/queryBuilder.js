@@ -60,10 +60,6 @@ describe('monoxide QueryBuilder', function() {
 				expect(res).to.have.length(3);
 				res.forEach(doc => {
 					expect(doc).to.have.property('_id');
-
-					expect(doc).to.have.property('save');
-					expect(doc.save).to.be.a('function');
-					expect(_.keys(doc)).to.not.include('save');
 				});
 			})
 	);
@@ -72,6 +68,32 @@ describe('monoxide QueryBuilder', function() {
 		monoxide.collections.users
 			.count({status: 'active'})
 			.then(res => expect(res).to.equal(3))
+	);
+
+	it.only('should have access to virtuals, statics and methods', ()=>
+		monoxide.collections.users
+			.find({status: 'active'})
+			.then(res => {
+				expect(res).to.be.an('array');
+				expect(res).to.have.length(3);
+				res.forEach(doc => {
+					expect(doc).to.have.property('_id');
+
+					// Check we have the basic save method
+					expect(doc).to.have.property('save');
+					expect(doc.save).to.be.a('function');
+					expect(_.keys(doc)).to.not.include('save');
+
+					// Access the password virtual
+					expect(doc).to.have.property('password', 'RESTRICTED');
+
+					// Call the greet() method on the document
+					expect(doc).to.have.property('greet');
+					expect(doc.greet).to.be.a('function');
+					expect(_.keys(doc)).to.not.include('greet');
+					expect(doc.greet()).to.equal(doc.settings.greeting + ' ' + doc.name);
+				});
+			})
 	);
 
 });
