@@ -5,6 +5,7 @@ function Monoxide() {
 	o.mongoose = mongoose;
 	o.classes = {
 		Cursor: require('./lib/cursor'),
+		Document: require('./lib/document'),
 		Defer: require('./lib/defer'),
 		Model: require('./lib/model'),
 		QueryBuilder: require('./lib/queryBuilder'),

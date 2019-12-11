@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var expect = require('chai').expect;
 var monoxide = require('..');
 var testSetup = require('./setup');
@@ -49,8 +50,10 @@ describe('monoxide QueryBuilder', function() {
 				expect(res).to.have.length(3);
 				res.forEach(doc => {
 					expect(doc).to.have.property('_id');
+
 					expect(doc).to.have.property('save');
-					expect(doc).to.be.a('function');
+					expect(doc.save).to.be.a('function');
+					expect(_.keys(doc)).to.not.include('save');
 				});
 			})
 	);
