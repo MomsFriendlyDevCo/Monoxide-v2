@@ -75,6 +75,8 @@ var setup = module.exports = {
 			name: String,
 		})
 		// }}}
+
+		return monoxide.init();
 	},
 	// }}}
 

@@ -42,6 +42,16 @@ describe('monoxide QueryBuilder', function() {
 			})
 	);
 
+	it('should perform a simple query via .findOne()', ()=>
+		monoxide.models.users
+			.findOne({name: 'Joe Random'})
+			.then(res => {
+				expect(res).to.be.an('object');
+				expect(res).to.have.property('_id');
+				expect(res).to.have.property('name', 'Joe Random');
+			})
+	);
+
 	it('should perform a simple query via .find({status: \'active\'})', ()=>
 		monoxide.models.users
 			.find({status: 'active'})
