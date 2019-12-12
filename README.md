@@ -151,6 +151,22 @@ Options are:
 | `therads`    | `number`   | `3`     | How many documents to attempt to create at once                                       |
 
 
+monoxide.settings
+-----------------
+Settings object used by Monoxide.
+
+| Option                      | Type     | Default          | Description                         |
+|-----------------------------|----------|------------------|-------------------------------------|
+| `connection`                | `Object` | See below        | Connection defaults, see notes      |
+| `connection.appname`        | `string` | `"monoxide"`     | Internal app name, used for logging |
+| `connection.promiseLibrary` | `Object` | `global.Promise` | Promise implementation to use       |
+
+
+**Notes:**
+* `connection.appname` should be set to a locally identifiable unique string for logging purposes
+* All depreciated functionality is disabled by default (`useNewUrlParser: true` + `useUnifiedTopology: true`) so no depreciation warnings are thrown on connect
+
+
 
 collection
 ----------

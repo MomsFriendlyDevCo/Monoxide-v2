@@ -1,9 +1,39 @@
 var debug = require('debug')('monoxide');
-var mongoose = require('mongoose');
+var mongo = require('mongodb').MongoClient;
 
 function Monoxide() {
 	var o = this;
-	o.mongoose = mongoose;
+
+	/**
+	* Various settings which mutate how Monoxide behaves
+	* @var {Object}
+	*/
+	o.settings = {
+		connection: {
+			// Local app exposure
+			appname: 'monoxide',
+			promiseLibrary: global.Promise,
+
+			// Switch off depreciated driver functionality
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		},
+	};
+
+
+	/**
+	* Higher level Mongo client handle
+	* This is established once only and can be used for multiple connections
+	* @var {MongoClient}
+	*/
+	o.mongoClient;
+
+
+	/**
+	* Mongo database instance
+	* @var {MongoDb}
+	*/
+	o.mongo; // Populated with the mongodb database handle when connected
 
 	// Classes {{{
 	o.classes = {
@@ -30,19 +60,19 @@ function Monoxide() {
 	*/
 	o.connect = (uri, options={}) => Promise.resolve()
 		.then(()=> debug('Connect', uri))
-		.then(()=> o.mongoose.connect(uri, {
-			promiseLibrary: global.Promise,
-			useCreateIndex: true,
-			useNewUrlParser: true,
-			useFindAndModify: true,
+		.then(()=> mongo.connect(uri, {
+			...o.settings.connection,
 			...options,
 		}))
+		.then(client => o.mongoClient = client)
+		.then(()=> o.mongoClient.db())
+		.then(db => o.mongo = db)
 		.then(()=> debug('Connected'));
 
 
 	o.disconnect = ()=> Promise.resolve()
 		.then(()=> debug('Disconnect'))
-		.then(()=> o.mongoose.disconnect())
+		.then(()=> o.mongoClient.close())
 		.then(()=> debug('Disconnected'));
 	// }}}
 
@@ -95,7 +125,7 @@ function Monoxide() {
 	*/
 	o.dropDatabase = ()=> Promise.resolve()
 		.then(()=> debug('Drop database'))
-		.then(()=> o.mongoose.connection.dropDatabase())
+		.then(()=> o.mongo.dropDatabase())
 		.then(()=> debug('Database dropped'));
 	// }}}
 

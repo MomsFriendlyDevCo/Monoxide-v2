@@ -35,7 +35,7 @@
     "debug": "^4.1.1",
     "globby": "^10.0.1",
     "lodash": "^4.17.11",
-    "mongoose": "^5.4.21",
+    "mongodb": "^3.4.0",
     "timestring": "^5.0.1"
   }
 }
