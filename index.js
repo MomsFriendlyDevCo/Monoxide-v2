@@ -103,7 +103,10 @@ function Monoxide() {
 	* @param {Object} spec The specification of the collection
 	* @returns {MonoxideCollection} The created collection instance
 	*/
-	o.schema = (name, spec) => o.collections[name] = new o.classes.Collection(o, name, spec);
+	o.schema = (name, spec) => {
+		if (typeof name !== 'string' || typeof spec !== 'object') throw new Error('Schema declaration must be of the form monoxide.schema(name, schemaObject)');
+		return o.collections[name] = new o.classes.Collection(o, name, spec);
+	};
 
 
 
