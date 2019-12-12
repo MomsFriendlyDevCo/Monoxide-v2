@@ -275,10 +275,15 @@ monoxide.collection.users.virtual('fullName', doc => doc.firstName + ' ' + doc.l
 ```
 
 
-collection.dropCollection()
----------------------------
+collection.dropCollection(options)
+----------------------------------
 Drop the table from the database.
 Returns a promise.
+
+| Option           | Type      | Default | Description                                                                          |
+|------------------|-----------|---------|--------------------------------------------------------------------------------------|
+| `removeMonoxide` | `boolean` | `true`  | If true the collection is also removed from the `monoxide.collections` lookup object |
+| `ignoreNotExist` | `boolean` | `true`  | Don't raise an error if the collection is already absent                             |
 
 
 query
