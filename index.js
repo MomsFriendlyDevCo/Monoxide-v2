@@ -187,6 +187,7 @@ function Monoxide() {
 	* Create a new Express compatible ReST server middleware
 	* @param {string|MonoxideCollection} collection The collection to bind to, or its name
 	* @param {Object} [options] Additional options to use, see the MonoxideRest for the full list of options
+	* @returns {MonoxideRest} A MonoxideRest express middleware factory
 	*/
 	o.serve = (collection, options) =>
 		new o.classes.Rest(o, o.collections[collection], options);

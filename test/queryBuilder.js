@@ -19,6 +19,7 @@ describe('monoxide QueryBuilder', function() {
 			})
 			.then(doc => doc.next())
 			.then(doc => {
+				expect(doc).to.be.ok;
 				expect(doc).to.have.property('_id');
 				expect(doc).to.have.property('next');
 				expect(doc.next).to.be.a('function');

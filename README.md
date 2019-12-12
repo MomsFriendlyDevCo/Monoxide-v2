@@ -380,21 +380,30 @@ Note: Unlike `document.$each` this does not resolve relative to the schema path,
 Returns a Promise.
 
 
-document.toObject()
--------------------
+document.$toObject()
+--------------------
 Convert the curent MonoxideDocument to a plain object.
 This will resolve all virtuals and value keys.
 Returns a Promise.
 
 
-document.save(patch)
---------------------
-Save the current monoxide document back to the database.
-Patch is an optional object of fields to merge before saving.
+document.create()
+-----------------
+Also available as `.$create()`.
+Create the document within the collection.
 Returns a Promise.
 
 
 document.delete()
 -----------------
+Also available as `.$delete()`.
 Delete the current monoxide document.
+Returns a Promise.
+
+
+document.save(patch)
+--------------------
+Also available as `.$save()`.
+Save the current monoxide document back to the database.
+Patch is an optional object of fields to merge before saving.
 Returns a Promise.

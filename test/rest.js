@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var axios = require('axios');
 var bodyParser = require('body-parser');
 var monoxide = require('..');
@@ -34,7 +35,7 @@ describe('ReST server', function() {
 	}));
 
 	before('add mainGenre virtual', ()=>
-		monoxide.collections.movies.virtual('mainGenre', movie => movie.info.genres[0])
+		monoxide.collections.movies.virtual('mainGenre', movie => _.get(movie, 'info.genres.0'))
 	);
 
 	before('wait for movies collection to complete loading', ()=> monoxide.collections.movies.createCollection());
