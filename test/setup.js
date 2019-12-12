@@ -50,9 +50,15 @@ var setup = module.exports = {
 				status: {type: 'string', enum: ['active', 'unverified', 'deleted'], default: 'unverified', index: true},
 				role: {type: String, enum: ['user', 'admin'], default: 'user', index: true},
 				_password: String,
+				mostPurchased: [{
+					number: Number,
+					item: {type: 'pointer', ref: 'widgets', index: true},
+				}],
+				items: [{type: 'pointer', ref: 'widgets', index: true}],
 				favourite: {
 					color: {type: 'string'},
 					animal: {type: 'string'},
+					widget: {type: 'pointer', ref: 'widgets', index: true},
 				},
 				settings: {
 					lang: {type: String, enum: ['en', 'es', 'fr'], default: 'en'},
@@ -75,6 +81,17 @@ var setup = module.exports = {
 		var Companies = monoxide.schema('companies', {
 			name: String,
 		})
+		// }}}
+
+		// Widgets {{{
+		var Widgets = monoxide.schema('widgets', {
+			created: {type: Date, default: Date.now},
+			name: String,
+			content: String,
+			status: {type: 'string', enum: ['active', 'deleted'], default: 'active', index: true},
+			color: {type: 'string', enum: ['red', 'green', 'blue', 'yellow'], default: 'blue', index: true, customArray: [1, 2, 3]},
+			featured: {type: 'boolean', default: false, customObject: {foo: 'Foo!', bar: 'Bar!'}},
+		}).use(require('../plugins/versionStamp')())
 		// }}}
 
 		return monoxide.init();

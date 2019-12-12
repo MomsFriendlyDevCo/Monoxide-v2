@@ -30,6 +30,7 @@ The currently active version of Monoxide [can be found here](https://github.com/
 * [ ] Collection.delete{One,Many,OneByID}
 * [x] Schema defaults
 * [ ] Schema validation
+* [ ] BUG: Recursive setter with virtuals
 
 
 Debugging
@@ -284,6 +285,13 @@ Returns a promise.
 |------------------|-----------|---------|--------------------------------------------------------------------------------------|
 | `removeMonoxide` | `boolean` | `true`  | If true the collection is also removed from the `monoxide.collections` lookup object |
 | `ignoreNotExist` | `boolean` | `true`  | Don't raise an error if the collection is already absent                             |
+
+
+collection.use(plugins...)
+--------------------------
+Inject one or more plugins into a collection.
+Plugins are expected to be a function, each of which is called as `(monoxide, monoxideCollection)` and should hook into the event handler to alter the base behaviour.
+Returns the chainable collection instance.
 
 
 query
