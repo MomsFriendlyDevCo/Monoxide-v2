@@ -164,6 +164,7 @@ function Monoxide() {
 			number: node => node.type = Number,
 			string: node => node.type = String,
 			pointer: node => node.type = 'FIXME:OID',
+			oid: node => node.type = 'FIXME:OID',
 		},
 	};
 
