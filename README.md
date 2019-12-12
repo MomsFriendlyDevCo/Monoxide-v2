@@ -45,6 +45,18 @@ DEBUG=monoxide node myFile.js
 If you want detailed module information (like what exact functions are calling queued), set `DEBUG=monoxide:detail`.
 
 
+| Debugging flag       | Definition                                 |
+|----------------------|--------------------------------------------|
+| `monoxide`           | General Monoxide debugging information     |
+| `monoxide:aggregate` | Show all executed aggregation queries      |
+| `monoxide:detail`    | Detailed Monoxide debugging information    |
+| `monoxide:query`     | Show all executed queries via QueryBuilder |
+
+**NOTES:**
+
+* As regular database queries are automatically translated into aggregation queries there will be some duplication
+
+
 API
 ===
 
