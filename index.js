@@ -18,6 +18,18 @@ function Monoxide() {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 		},
+		serve: {
+			param: 'id',
+			countParam: 'count',
+			get: true,
+			query: true,
+			count: true,
+			create: false,
+			save: false,
+			delete: false,
+			searchId: '_id',
+			errorHandler: (res, code, text) => res.status(code).send(text),
+		},
 	};
 
 
@@ -43,6 +55,7 @@ function Monoxide() {
 		Defer: require('./lib/defer'),
 		QueryBuilder: require('./lib/queryBuilder'),
 		Scenario: require('./lib/scenario'),
+		Rest: require('./lib/rest'),
 	};
 	// }}}
 
@@ -163,6 +176,16 @@ function Monoxide() {
 		o.types.definitions[id] = def;
 		return o;
 	};
+	// }}}
+
+	// ReST server {{{
+	/**
+	* Create a new Express compatible ReST server middleware
+	* @param {string|MonoxideCollection} collection The collection to bind to, or its name
+	* @param {Object} [options] Additional options to use, see the MonoxideRest for the full list of options
+	*/
+	o.serve = (collection, options) =>
+		new o.classes.Rest(o, o.collections[collection], options);
 	// }}}
 
 	return o;
