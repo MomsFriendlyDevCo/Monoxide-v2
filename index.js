@@ -55,6 +55,7 @@ function Monoxide() {
 		Defer: require('./lib/defer'),
 		QueryBuilder: require('./lib/queryBuilder'),
 		Scenario: require('./lib/scenario'),
+		Schema: require('./lib/schema'),
 		Rest: require('./lib/rest'),
 	};
 	// }}}
