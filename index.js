@@ -148,25 +148,22 @@ function Monoxide() {
 
 	// Type handling {{{
 	o.types = { // Custom types
+		/**
+		* Translation to Monoxide type internals to be tested in order
+		* This is used to translate native types to strings
+		* @var {Array <Object>}
+		* @property {function} test Called as (node) to test if the node definition matches
+		* @property {string} type The type mapping to set if the test passes
+		*
+		* @example
+		* {foo: String} // becomes: {foo: {type: 'string'}}
+		*/
 		translate: [ // Lookup for translating aliases to an internal 'string' type
-			// Translation to Monoxide type internals
 			{test: f => f === String, type: 'string'},
 			{test: f => f === Number, type: 'number'},
 			{test: f => f === Date, type: 'date'},
 			{test: f => f === Boolean, type: 'boolean'},
 		],
-		definitions: {
-			// Basic scalar primatives
-			// If an object contains the definition the node should be assigned as
-			// If a function should mutate the node when called as (node, collection, o)
-			boolean: node => node.type = Boolean,
-			date: node => node.type = Date,
-			map: node => node.type = Map,
-			number: node => node.type = Number,
-			string: node => node.type = String,
-			pointer: node => node.type = 'FIXME:OID',
-			oid: node => node.type = 'FIXME:OID',
-		},
 	};
 
 
