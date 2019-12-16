@@ -43,6 +43,49 @@ describe('monoxide QueryBuilder', function() {
 			})
 	);
 
+	it('should act as an event emitter .find()', done => {
+		var docs = [];
+
+		monoxide.collections.users
+			.find()
+			.on('doc', (doc, docNumber) => {
+				expect(doc).to.be.an('object');
+				expect(docNumber).to.be.a('number');
+				docs.push(doc);
+			})
+			.on('finish', ()=> {
+				expect(docs).to.be.an('array');
+				expect(docs).to.have.length(7);
+				done();
+			})
+	});
+
+	it('should handle event emitter errors', done => {
+		var docs = [];
+		var called = {error: false, finish: false};
+
+		monoxide.collections.users
+			.find()
+			.on('doc', (doc, docNumber) => {
+				expect(doc).to.be.an('object');
+				expect(docNumber).to.be.a('number');
+				docs.push(doc);
+				if (docNumber == 3) throw new Error('Nope!');
+			})
+			.on('error', e => {
+				expect(e).to.be.an('error');
+				called.error = true;
+				expect(docs).to.be.an('array');
+				expect(docs).to.have.length(4); // Should only have got two documents in
+			})
+			.on('finish', ()=> called.finish = true)
+			.on('finally', ()=> {
+				expect(called.error).to.be.ok;
+				expect(called.finish).to.be.not.ok;
+				done();
+			});
+	});
+
 	it('should perform a simple query via .findOne()', ()=>
 		monoxide.collections.users
 			.findOne({name: 'Joe Random'})

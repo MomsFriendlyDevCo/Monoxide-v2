@@ -362,6 +362,20 @@ Execute the query and return a promise.
 This is automatically invoked with any promise like function call - `then`, `catch` and `finally`.
 
 
+query.on(event, func)
+---------------------
+Execute the query and return an event emitter.
+
+Events emitted:
+
+| Event     | Arguments    | Description                                                                  |
+|-----------|--------------|------------------------------------------------------------------------------|
+| `doc`     | `(document)` | Emitted for each document within a cursor until the cursor is exhausted      |
+| `finish`  | `()`         | Emitted when all cursor documents have finished streaming                    |
+| `error`   | `(error)`    | Emitted if any document threw an error or returned a `Promise.reject()`      |
+| `finally` | `()`         | Emitted when all documents are exhausted whether or not an error has occured |
+
+
 document
 --------
 The return value of a monoxide query.
