@@ -5,7 +5,7 @@ var testSetup = require('./setup');
 
 describe('monoxide.classes.Schema', function() {
 
-	it('should parse a schema', ()=> {
+	it('should parse a complex schema', ()=> {
 		var schema = {
 			name: String,
 			type: 'string',

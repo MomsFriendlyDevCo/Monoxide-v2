@@ -12,7 +12,7 @@ var port = 8181;
 var url = 'http://localhost:' + port;
 var dy;
 
-describe('ReST server', function() {
+describe('monoxide.classes.Rest', function() {
 	this.timeout(5 * 1000);
 
 	before(testSetup.init);

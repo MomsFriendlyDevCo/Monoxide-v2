@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 var monoxide = require('..');
 var testSetup = require('./setup');
 
-describe('monoxide QueryBuilder', function() {
+describe('monoxide.classes.QueryBuilder', function() {
 
 	before(testSetup.init);
 	after(testSetup.teardown);
