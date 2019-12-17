@@ -381,18 +381,25 @@ document
 The return value of a monoxide query.
 
 
-document.$each(path, func)
---------------------------
+document.$each(path, func, options)
+-----------------------------------
 Iterate down a document schema path running a function on all matching endpoints.
-With one (dotted notation) path this acts the same as `_.set()` but if any of the nodes are arrays all branching endpoints are mapped via the function.
+The function is called as `(docNode, schemaNode, docPath, schemaPath, doc)` and can return a promise which will be waited on.
 Returns a Promise.
 
 
-document.$eachDocumentNode(path, func)
---------------------------------------
-Iterate down a document (Note: *not* a schema, use `document.$each()` for that) and set paths.
-With one (dotted notation) path this acts the same as `_.set()` but if any of the nodes are arrays all branching endpoints are mapped via the function.
-Returns a Promise.
+document.$get(path)
+-------------------
+Return the simple dotted notation path within an object.
+Note: Unlike `document.$each` this does not resolve relative to the schema path, just the plain dotted notation path.
+Returns the immediate value if any or undefined if none found.
+
+
+document.$has(path)
+-------------------
+Return whether the simple dotted notation path within an object actually exists.
+Note: Unlike `document.$each` this does not resolve relative to the schema path, just the plain dotted notation path.
+Returns a boolean indicating if that path exists.
 
 
 document.$set(path, value)
@@ -409,23 +416,37 @@ This will resolve all virtuals and value keys.
 Returns a Promise.
 
 
-document.create()
------------------
+document.$create()
+------------------
 Also available as `.$create()`.
 Create the document within the collection.
 Returns a Promise.
 
 
-document.delete()
+document.create()
 -----------------
+Alias of `document.$create()` if no naming conflicts occur within the data.
+
+
+document.$delete()
+------------------
 Also available as `.$delete()`.
 Delete the current monoxide document.
 Returns a Promise.
 
 
-document.save(patch)
---------------------
-Also available as `.$save()`.
+document.delete()
+-----------------
+Alias of `document.$delete()` if no naming conflicts occur within the data.
+
+
+document.$save(patch)
+---------------------
 Save the current monoxide document back to the database.
 Patch is an optional object of fields to merge before saving.
 Returns a Promise.
+
+
+document.save(patch)
+--------------------
+Alias of `document.$save()` if no naming conflicts occur within the data.

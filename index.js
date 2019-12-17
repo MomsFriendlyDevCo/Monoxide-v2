@@ -57,6 +57,7 @@ function Monoxide() {
 		Scenario: require('./lib/scenario'),
 		Schema: require('./lib/schema'),
 		Rest: require('./lib/rest'),
+		Walker: require('./lib/walker'),
 	};
 	// }}}
 

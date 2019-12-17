@@ -52,9 +52,9 @@ var setup = module.exports = {
 				_password: String,
 				mostPurchased: [{
 					number: Number,
-					item: {type: 'pointer', ref: 'widgets', index: true},
+					widget: {type: 'pointer', ref: 'widgets', index: true},
 				}],
-				items: [{type: 'pointer', ref: 'widgets', index: true}],
+				widgets: [{type: 'pointer', ref: 'widgets', index: true}],
 				favourite: {
 					color: {type: 'string'},
 					animal: {type: 'string'},
