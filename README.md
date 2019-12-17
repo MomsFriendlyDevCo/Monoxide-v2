@@ -4,21 +4,29 @@ This project is for Monoxide version 2 which is currently in the RFC stage.
 The currently active version of Monoxide [can be found here](https://github.com/hash-bang/Monoxide).
 
 
+**Basic philosophy:** The core (i.e. plugins) version of Monoxide accepts a schema per collection with basic CRUD and utility functions. Out-of-the-box, the core not enforce any rules (e.g. applying defaults, indexes etc.). Its down to each plugin to bind to an event handler and apply its behaviour.
+
+For example A plugin that enforces `default` values on schema nodes would listen for events then apply its mutating behaviour as needed.
+
+This structure keeps the core library as minimal and optimized as possible with all other functionality being opt in.
+
+
 **Features:**
-* (Almost) Zero reliance on Mongoose - This module is as close to the Mongo metal as possible for speed and compatibility reasons
+* Zero reliance on Mongoose - This module is as close to the Mongo metal as possible for speed and compatibility reasons
 * Everything is a promise. Absolutely no callbacks at all, anywhere
-* Express compatible ReST server out-of-the-box
-* Schemas are validated at JS native level
+* Schemas are validated at JS native level, server-level Mongo schemas are not used
+* Full event emitter lifecycle for documents, collections and the core module
+* Extensive plugin support using event listeners
 * Statics / Methods / Virtuals support
-* The `value` schema field can force a value to be set on each write operation - e.g. `{edited: {type: 'date', value: (doc, iter, docPath, schemaPath) => new Date()}}`
-* Much better debugging with the use of `DEBUG=monoxide:query` and `DEBUG=monoxide:aggregation` (see [below](#debugging))
+* Easier debugging using the `DEBUG` environment variable (see [debugging](#debugging))
+* Easily defined custom database types
+* Express compatible ReST server out-of-the-box
 
 
 **TODO:**
 
 * [x] Basic implementation
 * [ ] [CRUD lifecycle](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
-* [ ] Testkits
 * [ ] ReST server
 * [x] Scenario support
 * [ ] Collection.createCollection()
@@ -28,9 +36,19 @@ The currently active version of Monoxide [can be found here](https://github.com/
 * [x] Collection.method()
 * [ ] Collection.serve properties: queryForce, queryValidate
 * [ ] Collection.delete{One,Many,OneByID}
-* [x] Schema defaults
+* [ ] Collection.index()
+* [ ] Schema defaults
 * [ ] Schema validation
-* [ ] BUG: Recursive setter with virtuals
+* [ ] Plugin: nodeIndex
+* [ ] Plugin: nodeDefault
+* [ ] Plugin: nodeRequired
+* [ ] Plugin: nodeValue
+* [ ] Plugin: nodePointer (two way pointers)
+* [ ] Plugin: nodeEnum
+* [ ] Plugin: nodeExpose (return by default, when asked or never return)
+* [ ] Plugin: collectionRevision (add revision incrementor)
+* [ ] Plugin: collectionVersion (store document snapshot on save)
+* [ ] Plugin: collectionStatusChange (store when status changes happened)
 
 
 Debugging
