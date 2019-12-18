@@ -445,6 +445,11 @@ The return value of a monoxide query.
 All properties are retrieved from the database. All Monoxide specific functionality is prefixed with a dollar sign (e.g. `$save`).
 
 
+MonoxideDocuemnt.$collection
+----------------------------
+The collection instance the document belongs to.
+
+
 MonoxideDocument.$each(path, func, options)
 -------------------------------------------
 Iterate down a document schema path running a function on all matching endpoints.

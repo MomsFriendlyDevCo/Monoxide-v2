@@ -118,10 +118,10 @@ function Monoxide() {
 	/**
 	* Declare a collection schema
 	* @param {string} name The name of the collection
-	* @param {Object} spec The specification of the collection
+	* @param {Object} [spec={}] The specification of the collection
 	* @returns {MonoxideCollection} The created collection instance
 	*/
-	o.schema = (name, spec) => {
+	o.schema = (name, spec = {}) => {
 		if (typeof name !== 'string' || typeof spec !== 'object') throw new Error('Schema declaration must be of the form monoxide.schema(name, schemaObject)');
 		return o.collections[name] = new o.classes.Collection(o, name, spec);
 	};
@@ -180,6 +180,7 @@ function Monoxide() {
 			{test: f => f === Number, type: 'number'},
 			{test: f => f === Date, type: 'date'},
 			{test: f => f === Boolean, type: 'boolean'},
+			{test: f => f === Array, type: 'array'},
 		],
 	};
 

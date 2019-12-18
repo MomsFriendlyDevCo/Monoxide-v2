@@ -91,7 +91,7 @@ var setup = module.exports = {
 			status: {type: 'string', enum: ['active', 'deleted'], default: 'active', index: true},
 			color: {type: 'string', enum: ['red', 'green', 'blue', 'yellow'], default: 'blue', index: true, customArray: [1, 2, 3]},
 			featured: {type: 'boolean', default: false, customObject: {foo: 'Foo!', bar: 'Bar!'}},
-		}).use(require('../plugins/versionStamp')())
+		});
 		// }}}
 
 		return monoxide.init();
