@@ -63,7 +63,7 @@ TODO
 * [ ] Plugin: nodeTypePrimatives (validate string, number, boolean JS types)
 * [ ] Plugin: nodeTypeAny
 * [ ] Plugin: nodeTypeBuffer
-* [ ] Plugin: collectionRevision (add revision incrementor)
+* [x] Plugin: collectionRevision (add revision incrementor)
 * [ ] Plugin: collectionVersion (store document snapshot on save)
 * [ ] Plugin: collectionStatusChange (store when status changes happened)
 
@@ -443,11 +443,6 @@ MonoxideDocument
 ----------------
 The return value of a monoxide query.
 All properties are retrieved from the database. All Monoxide specific functionality is prefixed with a dollar sign (e.g. `$save`).
-
-
-MonoxideDocument.$data
-----------------------
-Raw data object access.
 
 
 MonoxideDocument.$each(path, func, options)

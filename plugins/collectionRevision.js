@@ -1,25 +1,32 @@
+var debugDetail = require('debug')('monoxide:detail');
+
 /**
-* Monoxide collection plugin
-* Apply the `__v` key to all documents and increment it on any changes
+* Monoxide collection revision plugin
+* Apply the `__v` key (configurable) to all documents and increment it on any changes
+*
+* @param {object} [options] Additional plugin options
+* @param {string|array} [options.revisionPath="__v"] The path where to save the version incrementor
+* @param {function} [options.incrementor] How to increment the value. Called as `(val)`. The default simply increments the integer
+*
 */
-module.exports = function MonoxidePluginVersionStamp(options) {
+module.exports = function MonoxidePluginCollectionRevision(o, collection, options) {
 	var settings = {
-		versionPath: '__v',
+		revisionPath: '__v',
 		incrementor: val => (val || 0) + 1,
 		...options,
 	};
 
-	return function(o, collection) {
-		collection.on('doc', doc => {
-			// Add the versionStamp if it does not already exist
-			if (!doc.$has(settings.versionPath))
-				doc.$set(settings.versionPath, 0);
-		});
+	collection.on('doc', doc => {
+		// Add the revisionPath if it does not already exist
+		if (!doc.$has(settings.revisionPath))
+			doc.$set(settings.revisionPath, 0);
+	});
 
-		collection.on('save', doc =>
-			doc.$get(versionPath)
-				.then(val => settings.incrementor(val))
-				.then(newVal => doc.$set(settings.versionPath, newVal))
-		);
-	};
+	collection.on('save', doc => {
+		if (debugDetail.enabled) debugDetail('Plugin:CollectionRevision Bump revision for', doc.$collection.name, '/', doc._id, 'from', doc.$get(settings.revisionPath), '=>', settings.incrementor(doc.$get(settings.revisionPath)));
+
+		return Promise.resolve(doc.$get(settings.revisionPath))
+			.then(val => settings.incrementor(val))
+			.then(newVal => doc.$set(settings.revisionPath, newVal))
+	});
 };
