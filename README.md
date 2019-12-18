@@ -39,13 +39,15 @@ This structure keeps the core library as minimal and optimized as possible with 
 * [ ] Collection.index()
 * [ ] Schema defaults
 * [ ] Schema validation
-* [ ] Plugin: nodeIndex
-* [ ] Plugin: nodeDefault
-* [ ] Plugin: nodeRequired
-* [ ] Plugin: nodeValue
-* [ ] Plugin: nodePointer (two way pointers)
-* [ ] Plugin: nodeEnum
-* [ ] Plugin: nodeExpose (return by default, when asked or never return)
+* [ ] Plugin: nodePropIndex
+* [x] Plugin: nodePropDefault
+* [ ] Plugin: nodePropRequired
+* [ ] Plugin: nodePropValue
+* [ ] Plugin: nodePropPointer (two way pointers)
+* [ ] Plugin: nodePropEnum
+* [ ] Plugin: nodePropExpose (return by default, when asked or never return)
+* [x] Plugin: nodeTypeOid
+* [ ] Plugin: nodeTypeDate
 * [ ] Plugin: collectionRevision (add revision incrementor)
 * [ ] Plugin: collectionVersion (store document snapshot on save)
 * [ ] Plugin: collectionStatusChange (store when status changes happened)
@@ -551,3 +553,56 @@ A function that can be called as `(newValue)` which will replace the current val
 walkerNode.remove()
 -------------------
 A function taht can be called as `()` to remove this node from the output
+
+
+Plugins
+=======
+Monoxide is based around its plugins.
+Each is applied either globally by setting `monoxide.settings.collections.plugins` or individually to collections using `monoxide.collections.COLLECTION.use(plugins...)`.
+
+
+The following are a list of built-in plugins and their options.
+
+
+nodePropDefault
+---------------
+Applies default values for schema nodes.
+Defaults can be a simple scalar or a (Promisable) function.
+
+```javascript
+monoxide.schema('nodePropDefault', {
+	testStr: {type: String, default: 'hello'},
+	testNum: {type: Number, default: 123},
+	testArr: {type: 'array', default: ()=> ([4, 5, _.random(10, 99)])},
+	testDate: {type: 'date', default: Date.now},
+	testBool: {type: Boolean, default: ()=> true},
+}).use('nodePropDefault')
+```
+
+This plugin has no configurable options.
+
+See the [testkit](./test/pluginNodePropDefault.js) for more examples.
+
+
+nodeTypeOid
+-----------
+Handles `ObjectID` types.
+This plugin can also optionally automatically stringify OIDs.
+
+```javascript
+monoxide.schema('nodeTypeOid', {
+	_id: {type: 'oid'},
+	id2: 'oid',
+	id3: {type: 'oid'},
+	test: String,
+	order: {type: Number, index: true}
+}).use('nodeTypeOid')javascript
+```
+
+Plugin configuration:
+
+| Setting     | Type      | Default | Description                                       |
+|-------------|-----------|---------|---------------------------------------------------|
+| `stringify` | `boolean` | `true`  | Flatten all OIDs into plain strings automatically |
+
+See the [testkit](./test/pluginNodeTypeOid.js) for more examples.

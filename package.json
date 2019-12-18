@@ -35,7 +35,7 @@
     "mongoose-scenario": "^2.1.3"
   },
   "dependencies": {
-    "@momsfriendlydevco/eventer": "^1.3.0",
+    "@momsfriendlydevco/eventer": "^1.4.0",
     "debug": "^4.1.1",
     "globby": "^10.0.1",
     "lodash": "^4.17.11",

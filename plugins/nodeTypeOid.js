@@ -1,5 +1,4 @@
 var debug = require('debug')('monoxide');
-var debugDetail = require('debug')('monoxide:detail');
 var ObjectID = require('mongodb').ObjectID;
 
 /**
@@ -10,8 +9,6 @@ var ObjectID = require('mongodb').ObjectID;
 * @param {MonoxideCollection} collection Collection instance
 * @param {Object} [options] Additional configuration options
 * @param {boolean} [options.stringify=true] Flatten all OIDs into plain strings automatically
-*
-* @emits oidStringify Emitted as `(doc, docPath, oidValue)` whenever a Mongo OID is stringified when being fetched from the database
 */
 module.exports = function MonoxidePluginStringOIDs(o, collection, options) {
 	var settings = {
