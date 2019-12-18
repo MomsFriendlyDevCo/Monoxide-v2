@@ -34,6 +34,8 @@ describe('monoxide.classes.Rest', function() {
 		},
 	}));
 
+	before('add rest plugin', ()=> monoxide.collections.movies.use('rest'));
+
 	before('add mainGenre virtual', ()=>
 		monoxide.collections.movies.virtual('mainGenre', movie => _.get(movie, 'info.genres.0'))
 	);

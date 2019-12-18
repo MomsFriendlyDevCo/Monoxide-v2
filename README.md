@@ -22,7 +22,7 @@ This structure keeps the core library as minimal and optimized as possible with 
 * Statics / Methods / Virtuals support
 * Easier debugging using the `DEBUG` environment variable (see [debugging](#debugging))
 * Easily defined custom database types
-* Express compatible ReST server out-of-the-box
+* Express compatible ReST server plugin
 
 
 Table of contents
@@ -48,7 +48,6 @@ TODO
 * [x] MonoxideCollection.static()
 * [ ] MonoxideCollection.virtual()
 * [x] MonoxideCollection.method()
-* [ ] MonoxideCollection.serve properties: queryForce, queryValidate
 * [ ] MonoxideCollection.index()
 * [ ] Plugin: nodePropIndex
 * [x] Plugin: nodePropDefault
@@ -619,7 +618,7 @@ monoxide.schema('nodeTypeOid', {
 	id3: {type: 'oid'},
 	test: String,
 	order: {type: Number, index: true}
-}).use('nodeTypeOid')javascript
+}).use('nodeTypeOid')
 ```
 
 Plugin configuration:
@@ -627,5 +626,47 @@ Plugin configuration:
 | Setting     | Type      | Default | Description                                       |
 |-------------|-----------|---------|---------------------------------------------------|
 | `stringify` | `boolean` | `true`  | Flatten all OIDs into plain strings automatically |
+
+See the [testkit](./test/pluginNodeTypeOid.js) for more examples.
+
+
+rest
+----
+Provides an Express middleware-compatible ReST server.
+
+```javascript
+// Declare the schema
+monoxide.schema('people', {
+	_id: {type: 'oid'},
+	name: String,
+	age: Number,
+}).use('rest')
+
+// Provide the middleware
+app.use('/api/people/:id?', monoxide.collections.people.serve({
+	get: true,
+	query: true,
+	count: true,
+	create: false,
+	save: true,
+	delete: false,
+}));
+```
+
+Plugin configuration defaults are specified per-collection when the plugin is first loaded OR can be specified in each `.serve()` call:
+
+| Setting        | Type                                      | Default   | Description                                                                                                                         |
+|----------------|-------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `param`        | `string`                                  | `"id"`    | The `req.params` key to use when retrieving the ID of specific document requests                                                    |
+| `countParam`   | `string`                                  | `"count"` | The override value of `param` which signifies a count operation                                                                     |
+| `get`          | `boolean`, `function`, `array <function>` | `true`    | Allow single document returns. Either a simple boolean indicating if this feature is enabled or Express middleware(s) to run before |
+| `query`        | `boolean`, `function`, `array <function>` | `true`    | Allow querying multiple documents. See `get`                                                                                        |
+| `count`        | `boolean`, `function`, `array <function>` | `true`    | Allow querying multiple documents as a count. See `get`                                                                             |
+| `create`       | `boolean`, `function`, `array <function>` | `false`   | Allow creation of a document. See `get`                                                                                             |
+| `save`         | `boolean`, `function`, `array <function>` | `false`   | Allow updating of a document. See `get`                                                                                             |
+| `delete`       | `boolean`, `function`, `array <function>` | `false`   | Allow deleting of a document. See `get`                                                                                             |
+| `searchId`     | `string`                                  | `"_id"`   | The Mongo ID field used to look up the single document specified by `param`                                                         |
+| `errorHandler` | `function`                                | See code  | How to handle errors. Default is to call `res.status(code).send(text)`                                                              |
+
 
 See the [testkit](./test/pluginNodeTypeOid.js) for more examples.

@@ -34,18 +34,6 @@ function Monoxide() {
 				`${__dirname}/plugins`,
 			],
 		},
-		serve: {
-			param: 'id',
-			countParam: 'count',
-			get: true,
-			query: true,
-			count: true,
-			create: false,
-			save: false,
-			delete: false,
-			searchId: '_id',
-			errorHandler: (res, code, text) => res.status(code).send(text),
-		},
 	};
 
 
@@ -72,7 +60,6 @@ function Monoxide() {
 		Query: require('./lib/query'),
 		Scenario: require('./lib/scenario'),
 		Schema: require('./lib/schema'),
-		Rest: require('./lib/rest'),
 		Walker: require('./lib/walker'),
 	};
 	// }}}
