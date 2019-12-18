@@ -29,25 +29,25 @@ This structure keeps the core library as minimal and optimized as possible with 
 * [ ] [CRUD lifecycle](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
 * [ ] ReST server
 * [x] Scenario support
-* [ ] Collection.createCollection()
-* [x] Collection.dropCollection()
+* [x] Collection.{create,drop}Collection()
 * [x] Collection.static()
-* [x] Collection.virtual()
+* [ ] Collection.virtual()
 * [x] Collection.method()
 * [ ] Collection.serve properties: queryForce, queryValidate
-* [ ] Collection.delete{One,Many,OneByID}
 * [ ] Collection.index()
-* [ ] Schema defaults
-* [ ] Schema validation
 * [ ] Plugin: nodePropIndex
 * [x] Plugin: nodePropDefault
 * [ ] Plugin: nodePropRequired
-* [ ] Plugin: nodePropValue
+* [ ] Plugin: nodePropValidate
+* [ ] Plugin: nodePropValue (forced value, even if a value is set manually)
 * [ ] Plugin: nodePropPointer (two way pointers)
 * [ ] Plugin: nodePropEnum
 * [ ] Plugin: nodePropExpose (return by default, when asked or never return)
 * [x] Plugin: nodeTypeOid
 * [ ] Plugin: nodeTypeDate
+* [ ] Plugin: nodeTypePrimatives (validate string, number, boolean JS types)
+* [ ] Plugin: nodeTypeAny
+* [ ] Plugin: nodeTypeBuffer
 * [ ] Plugin: collectionRevision (add revision incrementor)
 * [ ] Plugin: collectionVersion (store document snapshot on save)
 * [ ] Plugin: collectionStatusChange (store when status changes happened)
