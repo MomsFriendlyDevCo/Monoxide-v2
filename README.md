@@ -210,6 +210,22 @@ A monoxide collection which was registered via `monoxide.schema(name, schema)`.
 Note that the collection is not actually ready to be used until `collection.createTable()` or `monoxide.init()` have been called.
 
 
+A collection can have the following emitted events (trappable via `.on(event, func)` / `.one(event, func)` `.off(event, func)` etc.):
+
+| Event              | Arguments      | Description                                                                                          |
+|--------------------|----------------|------------------------------------------------------------------------------------------------------|
+| `doc`              | `(doc)`        | Emitted when a new MonoxideDocument instance is created for this collection                          |
+| `docNode`          | `(WalkerNode)` | Emitted when iterating through a document after `doc` has been created                               |
+| `docNode:TYPE`     | `(WalkerNode)` | Emitted when iterating through a document after `doc` has been created, matches a specific node type |
+| `docCreated`       | `(doc)`        | Emitted when all emitters have finished                                                              |
+| `resolve`          | `(doc)`        | Emitted as when a MonoxideDocument instance is run via `.$toObject()`, such as when its being saved  |
+| `resolveNode`      | `(WalkerNode)` | Emitted when iterating individual nodes during a resolve operation                                   |
+| `resolveNode:TYPE` | `(WalkerNode)` | As with `resolveNode` but for specific schema types                                                  |
+| `resolved`         | `(doc)`        | Emitted after all resolve emitters have finished                                                     |
+| `save`             | `(doc)`        | Emitted before any save operation                                                                    |
+| `saved`            | `(doc)`        | Emitted after any save operation                                                                     |
+
+
 collection.createTable()
 ------------------------
 Create the collection within Mongo and prepare it to be used.
