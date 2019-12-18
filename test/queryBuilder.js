@@ -43,6 +43,22 @@ describe('monoxide.classes.QueryBuilder', function() {
 			})
 	);
 
+	it('should fetch lean documents via .find().lean()', ()=>
+		monoxide.collections.users
+			.find()
+			.lean()
+			.then(res => {
+				expect(res).to.be.an('array');
+				expect(res).to.have.length(7);
+
+				res.forEach(doc => {
+					expect(doc).to.not.have.property('$data');
+					expect(doc).to.not.have.property('$toObject');
+					expect(doc).to.not.have.property('$save');
+				});
+			})
+	);
+
 	it('should act as an event emitter .find()', done => {
 		var docs = [];
 
