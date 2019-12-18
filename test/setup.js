@@ -25,7 +25,7 @@ var setup = module.exports = {
 		if (!allowTeardown) {
 			mlog.error('Skipping teardown');
 			mlog.log('To examine use `mongo ' + mongoURI.replace(/^.+\/(.*)?/, '$1') + '`');
-			return;
+			return Promise.resolve();
 		}
 
 		return Promise.resolve()
