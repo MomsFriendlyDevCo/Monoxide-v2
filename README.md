@@ -420,6 +420,11 @@ document
 The return value of a monoxide query.
 
 
+document.$data
+--------------
+Raw data object access.
+
+
 document.$each(path, func, options)
 -----------------------------------
 Iterate down a document schema path running a function on all matching endpoints.
