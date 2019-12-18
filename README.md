@@ -247,6 +247,7 @@ A collection can have the following emitted events (trappable via [eventer liste
 | `resolved`         | `(MonoxideDocument)`   | Emitted after all resolve emitters have finished                                                     |
 | `save`             | `(MonoxideDocument)`   | Emitted before any save operation                                                                    |
 | `saved`            | `(MonoxideDocument)`   | Emitted after any save operation                                                                     |
+| `ready`            | `()`                   | Emitted when a collcection has fully loaded, also trappable via the monoxide event 'collection'      |
 
 
 MonoxideCollection.createTable()

@@ -1,6 +1,11 @@
 var debug = require('debug')('monoxide');
+var eventer = require('@momsfriendlydevco/eventer');
 var mongo = require('mongodb').MongoClient;
 
+/**
+* Main monoxide class
+* @emits collection Emitted as `(collection)` whenever a new collection has been added
+*/
 function Monoxide() {
 	var o = this;
 
@@ -192,16 +197,7 @@ function Monoxide() {
 	};
 	// }}}
 
-	// ReST server {{{
-	/**
-	* Create a new Express compatible ReST server middleware
-	* @param {string|MonoxideCollection} collection The collection to bind to, or its name
-	* @param {Object} [options] Additional options to use, see the MonoxideRest for the full list of options
-	* @returns {MonoxideRest} A MonoxideRest express middleware factory
-	*/
-	o.serve = (collection, options) =>
-		new o.classes.Rest(o, o.collections[collection], options);
-	// }}}
+	eventer.extend(o);
 
 	return o;
 };
