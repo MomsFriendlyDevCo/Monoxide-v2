@@ -5,7 +5,7 @@ var debugDetail = require('debug')('monoxide:detail');
 * Monoxide collection plugin
 * Add a default value to all nodes
 * The function can be a scalar or Promise compatible return
-* If the default is specified as a function it is called as `(walkerNode)` and expected to return a scalar
+* If the default is specified as a function it is called as `(MonoxideWalkerNode)` and expected to return a scalar
 * @param {Monoxide} monoxide Monoxide parent instance
 * @param {MonoxideCollection} collection Collection instance
 * @param {Object} [options] Additional configuration options

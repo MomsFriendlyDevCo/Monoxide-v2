@@ -25,18 +25,31 @@ This structure keeps the core library as minimal and optimized as possible with 
 * Express compatible ReST server out-of-the-box
 
 
-**TODO:**
+Table of contents
+-----------------
+* [TODO](#todo)
+* [Debugging](#debugging)
+* [API](#api)
+	- [Monoxide](#monoxide) - Main Monoxide instance
+	- [MonoxideCollection](#monoxidecollection) - Collection instance available as `monoxide.collections.COLLECTION`
+	- [MonoxideQuery](#monoxidequery) - Query builder returned with `monoxide.collections.COLLECTION.find()`
+	- [MonoxideDocument](#monoxidedocument) - Invididual (non-lean) document entitites
+	- [MonoxideWalkerNode](#monoxidewalkernode) - Callback node used in `MonoxideDocument.$each(path, func)`
+
+
+TODO
+----
 
 * [x] Basic implementation
 * [ ] [CRUD lifecycle](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
 * [ ] ReST server
 * [x] Scenario support
-* [x] Collection.{create,drop}Collection()
-* [x] Collection.static()
-* [ ] Collection.virtual()
-* [x] Collection.method()
-* [ ] Collection.serve properties: queryForce, queryValidate
-* [ ] Collection.index()
+* [x] MonoxideCollection.{create,drop}Collection()
+* [x] MonoxideCollection.static()
+* [ ] MonoxideCollection.virtual()
+* [x] MonoxideCollection.method()
+* [ ] MonoxideCollection.serve properties: queryForce, queryValidate
+* [ ] MonoxideCollection.index()
 * [ ] Plugin: nodePropIndex
 * [x] Plugin: nodePropDefault
 * [ ] Plugin: nodePropRequired
@@ -83,36 +96,42 @@ If you want detailed module information (like what exact functions are calling q
 API
 ===
 
-monoxide
+Monoxide
 --------
 Main instance of the Monoxide database driver.
 
+The global Monoxide instance object can have the following emitted events (trappable via [eventer listeners](https://github.com/MomsFriendlyDevCo/eventer)):
 
-monoxide.collections
+| Event              | Arguments      | Description                                                                                          |
+|--------------------|----------------|------------------------------------------------------------------------------------------------------|
+| `collection`       | `(collection)` | Emitted when a new collection has loaded and is ready for use                                        |
+
+
+Monoxide.collections
 --------------------
 Object for all loaded collections.
 
 
-monoxide.connect(uri, options)
+Monoxide.connect(uri, options)
 ------------------------------
 Connect to a Mongo database endpoint.
 Returns a promise.
 
 
-monoxide.disconnect()
+Monoxide.disconnect()
 ------------------
 Disconnect from the connected Mongo database endpoint.
 Returns a promise.
 
 
-monoxide.init()
+Monoxide.init()
 ---------------
 Function which waits for all collections to finish loading.
 This should be called after `.connect()` and before any collections are used.
 Returns a promise.
 
 
-monoxide.schema(name, schema, options)
+Monoxide.schema(name, schema, options)
 ---------------------------------
 Declare a collections schema. All collections are automatically available via `monoxide.collections`.
 
@@ -138,7 +157,7 @@ Each schema entry has the following properties:
 See [collections](#collections) for available collections options.
 
 
-monoxide.schemaType(id, definition)
+Monoxide.schemaType(id, definition)
 --------------------------------
 Declare a custom schema type.
 If supplied with an object it is used as the default specification of a single schema item (i.e. doesn't overwrite existing fields).
@@ -146,7 +165,7 @@ If a function is supplied it is called as `(schemaNode, collections, monoxide)` 
 Returns the chainable Monoxide instance.
 
 
-monoxide.scenario(input, options)
+Monoxide.scenario(input, options)
 ----------------------------------
 Accept an object or glob of files (or an array of globs) and import them. JSON and JS files (with an export) are accepted.
 The meta field `$` is used to reference fields, with any value starting with `$` getting that fields value.
@@ -186,7 +205,7 @@ Options are:
 | `therads`    | `number`   | `3`     | How many documents to attempt to create at once                                       |
 
 
-monoxide.settings
+Monoxide.settings
 -----------------
 Settings object used by Monoxide.
 
@@ -208,95 +227,95 @@ Settings object used by Monoxide.
 
 
 
-collection
-----------
+MonoxideCollection
+------------------
 A monoxide collection which was registered via `monoxide.schema(name, schema)`.
-Note that the collection is not actually ready to be used until `collection.createTable()` or `monoxide.init()` have been called.
+Note that the collection is not actually ready to be used until `MonoxideCollection.createTable()` or `monoxide.init()` have been called.
 
 
-A collection can have the following emitted events (trappable via `.on(event, func)` / `.one(event, func)` `.off(event, func)` etc.):
+A collection can have the following emitted events (trappable via [eventer listeners](https://github.com/MomsFriendlyDevCo/eventer)):
 
-| Event              | Arguments      | Description                                                                                          |
-|--------------------|----------------|------------------------------------------------------------------------------------------------------|
-| `doc`              | `(doc)`        | Emitted when a new MonoxideDocument instance is created for this collection                          |
-| `docNode`          | `(WalkerNode)` | Emitted when iterating through a document after `doc` has been created                               |
-| `docNode:TYPE`     | `(WalkerNode)` | Emitted when iterating through a document after `doc` has been created, matches a specific node type |
-| `docCreated`       | `(doc)`        | Emitted when all emitters have finished                                                              |
-| `resolve`          | `(doc)`        | Emitted as when a MonoxideDocument instance is run via `.$toObject()`, such as when its being saved  |
-| `resolveNode`      | `(WalkerNode)` | Emitted when iterating individual nodes during a resolve operation                                   |
-| `resolveNode:TYPE` | `(WalkerNode)` | As with `resolveNode` but for specific schema types                                                  |
-| `resolved`         | `(doc)`        | Emitted after all resolve emitters have finished                                                     |
-| `save`             | `(doc)`        | Emitted before any save operation                                                                    |
-| `saved`            | `(doc)`        | Emitted after any save operation                                                                     |
+| Event              | Arguments              | Description                                                                                          |
+|--------------------|------------------------|------------------------------------------------------------------------------------------------------|
+| `doc`              | `(MonoxideDocument)`   | Emitted when a new MonoxideDocument instance is created for this collection                          |
+| `docNode`          | `(MonoxideWalkerNode)` | Emitted when iterating through a document after `doc` has been created                               |
+| `docNode:TYPE`     | `(MonoxideWalkerNode)` | Emitted when iterating through a document after `doc` has been created, matches a specific node type |
+| `docCreated`       | `(MonoxideDocument)`   | Emitted when all emitters have finished                                                              |
+| `resolve`          | `(MonoxideDocument)`   | Emitted as when a MonoxideDocument instance is run via `.$toObject()`, such as when its being saved  |
+| `resolveNode`      | `(MonoxideWalkerNode)` | Emitted when iterating individual nodes during a resolve operation                                   |
+| `resolveNode:TYPE` | `(MonoxideWalkerNode)` | As with `resolveNode` but for specific schema types                                                  |
+| `resolved`         | `(MonoxideDocument)`   | Emitted after all resolve emitters have finished                                                     |
+| `save`             | `(MonoxideDocument)`   | Emitted before any save operation                                                                    |
+| `saved`            | `(MonoxideDocument)`   | Emitted after any save operation                                                                     |
 
 
-collection.createTable()
-------------------------
+MonoxideCollection.createTable()
+--------------------------------
 Create the collection within Mongo and prepare it to be used.
 This function is called on all collections via `monoxide.init()`.
 Returns a promise.
 
 
-collection.create(doc)
-----------------------
+MonoxideCollection.create(MonoxideDocument)
+-------------------------------------------
 Create a single document.
 Returns a promise.
 
 
-collection.deleteOne(query)
----------------------------
+MonoxideCollection.deleteOne(query)
+-----------------------------------
 Delete the first document matching the given query.
 Returns a promise.
 
 
-collection.deleteOneById(doc)
------------------------------
+MonoxideCollection.deleteOneById(id)
+------------------------------------
 Delete a single document by its ID.
 Returns a promise.
 
 
-collection.deleteMany(query)
-----------------------------
+MonoxideCollection.deleteMany(query)
+------------------------------------
 Delete all docs matching the given query.
 Returns a promise.
 
 
-collection.find(query)
-----------------------
+MonoxideCollection.find(query)
+------------------------------
 Create a QueryBuilder instance with an initially populated query.
 Acts like a promise.
 
 
-collection.findOne(query)
--------------------------
-Shorthand for `collection.find(query).one()`.
+MonoxideCollection.findOne(query)
+---------------------------------
+Shorthand for `MonoxideCollection.find(query).one()`.
 
 
-collection.findOneByID(query)
------------------------------
-Shorthand for `collection.find({_id: id}).one()`.
+MonoxideCollection.findOneByID(query)
+-------------------------------------
+Shorthand for `MonoxideCollection.find({_id: id}).one()`.
 
 
-collection.count(query)
------------------------
-Shorthand for `collection.find(query).count()`.
+MonoxideCollection.count(query)
+-------------------------------
+Shorthand for `MonoxideCollection.find(query).count()`.
 
 
-collection.static(name, func)
------------------------------
+MonoxideCollection.static(name, func)
+-------------------------------------
 Extend a MonoxideCollection to include the named function.
 This is really just an easier way of handling mixins with collections.
 
 ```javascript
 // Create another way of counting users
-monoxide.collections.users.static('countUsers', ()=> monoxide.collection.users.count());
+monoxide.collections.users.static('countUsers', ()=> monoxide.collections.users.count());
 
 monoxide.collections.users.countUsers(); //= {Promise <Number>}
 ```
 
 
-collection.method(name, func)
------------------------------
+MonoxideCollection.method(name, func)
+-------------------------------------
 Extend a monoxideDocument instance to include the named function. This function is effecively glued onto and documents returned via `find` (or its brethren).
 
 ```javascript
@@ -308,19 +327,19 @@ monoxide.collections.users.findOne({username: 'bad@user.com'})
 ```
 
 
-collection.virtual(name, getter, setter)
-----------------------------------------
+MonoxideCollection.virtual(name, getter, setter)
+------------------------------------------------
 Define a virtual field which acts like a getter / setter when accessed.
-All virtual methods are called as `(doc)` and expected to return a value which is assigned to their field.
+All virtual methods are called as `(MonoxideDocument)` and expected to return a value which is assigned to their field.
 
 
 ```javascript
-monoxide.collection.users.virtual('fullName', doc => doc.firstName + ' ' + doc.lastName);
+monoxide.collections.users.virtual('fullName', doc => doc.firstName + ' ' + doc.lastName);
 ```
 
 
-collection.dropCollection(options)
-----------------------------------
+MonoxideCollection.dropCollection(options)
+------------------------------------------
 Drop the table from the database.
 Returns a promise.
 
@@ -330,83 +349,83 @@ Returns a promise.
 | `ignoreNotExist` | `boolean` | `true`  | Don't raise an error if the collection is already absent                             |
 
 
-collection.use(plugins...)
---------------------------
-Inject one or more plugins into a collection.
+MonoxideCollection.use(plugins...)
+----------------------------------
+Inject one or more plugins into a MonoxideCollection.
 Plugins are expected to be a function, each of which is called as `(monoxide, monoxideCollection)` and should hook into the event handler to alter the base behaviour.
 Returns the chainable collection instance.
 
 
-query
------
+MonoxideQuery
+-------------
 The monoxide query object.
 This is a chainable instance which executes itself when any Promise method is called i.e. `then`, `catch` or `finally.
 
 
-query.find(query)
------------------
+MonoxideQuery.find(query)
+-------------------------
 Merge the internal query to execute with the provided one.
 
 
-query.one()
------------
+MonoxideQuery.one()
+-------------------
 Indicate that only the first match should be returned from the query and that the response should be an object rather than an array
 
 
-query.findOne(query)
---------------------
+MonoxideQuery.findOne(query)
+----------------------------
 Alias of `query.find(query).one()`
 
 
-query.count()
--------------
+MonoxideQuery.count()
+---------------------
 Transform the query output into a count of documents rather than the document itself.
 
 
-query.limit(limit)
-------------------
+MonoxideQuery.limit(limit)
+--------------------------
 Set the maximum number of documents to return.
 
 
-query.skip(skip)
-----------------
+MonoxideQuery.skip(skip)
+------------------------
 Ignore the first number of documents in a return.
 
 
-query.select(fields...)
------------------------
+MonoxideQuery.select(fields...)
+-------------------------------
 Specify an array, CSV or list of fields to provide from the query rather than the entire object.
 
 
-query.sort(fields...)
----------------------
+MonoxideQuery.sort(fields...)
+-----------------------------
 Specify an array, CSV or list of sort criteria. Reverse sorting is provided by prefixing the field with `-`.
 
 
-query.lean()
-------------
+MonoxideQuery.lean()
+--------------------
 Do not decorate the found documents with the MonoxideDocument class - this skips the prototype methods being added as well as all default field calculations.
 
 
-query.delete()
---------------
+MonoxideQuery.delete()
+----------------------
 Perform the query and remove all matching documents.
 
 
-query.update(fields)
---------------------
+MonoxideQuery.update(fields)
+----------------------------
 Perform the query and update all matching documents with the specified `fields`.
 Note that if `lean` is enabled virtuals and fields with the `value` attribute cannot be processed also.
 
 
-query.exec()
-------------
+MonoxideQuery.exec()
+--------------------
 Execute the query and return a promise.
 This is automatically invoked with any promise like function call - `then`, `catch` and `finally`.
 
 
-query.on(event, func)
----------------------
+MonoxideQuery.on(event, func)
+-----------------------------
 Execute the query and return an event emitter.
 
 Events emitted:
@@ -419,148 +438,149 @@ Events emitted:
 | `finally` | `()`         | Emitted when all documents are exhausted whether or not an error has occured |
 
 
-document
---------
+MonoxideDocument
+----------------
 The return value of a monoxide query.
+All properties are retrieved from the database. All Monoxide specific functionality is prefixed with a dollar sign (e.g. `$save`).
 
 
-document.$data
---------------
+MonoxideDocument.$data
+----------------------
 Raw data object access.
 
 
-document.$each(path, func, options)
------------------------------------
+MonoxideDocument.$each(path, func, options)
+-------------------------------------------
 Iterate down a document schema path running a function on all matching endpoints.
-The function is called as `(WalkerNode)` and can return a promise which will be waited on.
+The function is called as `(MonoxideWalkerNode)` and can return a promise which will be waited on.
 Returns a Promise.
 
-See [walkerNode](#walkerNode) for the definition of the single parameter (and context) passed to the function.
+See [MonoxideWalkerNode](#monoxidewalkernode) for the definition of the single parameter (and context) passed to the function.
 
 
-document.$get(path)
--------------------
+MonoxideDocument.$get(path)
+---------------------------
 Return the simple dotted notation path within an object.
 Note: Unlike `document.$each` this does not resolve relative to the schema path, just the plain dotted notation path.
 Returns the immediate value if any or undefined if none found.
 
 
-document.$has(path)
--------------------
+MonoxideDocument.$has(path)
+---------------------------
 Return whether the simple dotted notation path within an object actually exists.
 Note: Unlike `document.$each` this does not resolve relative to the schema path, just the plain dotted notation path.
 Returns a boolean indicating if that path exists.
 
 
-document.$set(path, value)
---------------------------
+MonoxideDocument.$set(path, value)
+----------------------------------
 Set the value of a dotted notation path, evaluating the value if its a promise.
 Note: Unlike `document.$each` this does not resolve relative to the schema path, just the plain object.
 Returns a Promise.
 
 
-document.$unset(path)
----------------------
+MonoxideDocument.$unset(path)
+-----------------------------
 Remove a key value via a dotted notation path.
 Note: Unlike `document.$each` this does not resolve relative to the schema path, just the plain object.
 Returns a Promise.
 
 
-document.$setMany(path, value)
-------------------------------
+MonoxideDocument.$setMany(path, value)
+--------------------------------------
 Set all matching endpoints within a document via a schema path, this will "branch" down array schema types and may potencially set multiple endpoints.
 If given a single object this function will treat all keys as dotted notation items to set individually.
 Returns a Promise.
 
 
-document.$toObject(patch)
--------------------------
+MonoxideDocument.$toObject(patch)
+---------------------------------
 Convert the curent MonoxideDocument to a plain object.
 An additional patch object can be specified which calls `clonedDoc.$setMany(patch)` automatically with additional fields to set.
 This will resolve all virtuals and value keys.
 Returns a Promise.
 
 
-document.$clone()
------------------
+MonoxideDocument.$clone()
+-------------------------
 Deep clone an object which is safe for mutation. This function is mainly used for internal purposes.
 
 
-document.$create()
-------------------
+MonoxideDocument.$create()
+--------------------------
 Also available as `.$create()`.
-Create the document within the collection.
+Create the document within the MonoxideCollection.
 Returns a Promise.
 
 
-document.create()
------------------
+MonoxideDocument.create()
+-------------------------
 Alias of `document.$create()` if no naming conflicts occur within the data.
 
 
-document.$delete()
-------------------
+MonoxideDocument.$delete()
+--------------------------
 Also available as `.$delete()`.
 Delete the current monoxide document.
 Returns a Promise.
 
 
-document.delete()
------------------
+MonoxideDocument.delete()
+-------------------------
 Alias of `document.$delete()` if no naming conflicts occur within the data.
 
 
-document.$save(patch)
----------------------
+MonoxideDocument.$save(patch)
+-----------------------------
 Save the current monoxide document back to the database.
 Patch is an optional object of fields to merge before saving.
 Returns a Promise.
 
 
-document.save(patch)
---------------------
+MonoxideDocument.save(patch)
+----------------------------
 Alias of `document.$save()` if no naming conflicts occur within the data.
 
 
-walkerNode
-----------
+MonoxideWalkerNode
+------------------
 The single object passed to the function on each discovered endpoint by the [document.$each](#document.$each) function.
 
 
-walkerNode.value
-----------------
+MonoxideWalkerNode.value
+------------------------
 The current data value while traversing
 
 
-walkerNode.schema
------------------
+MonoxideWalkerNode.schema
+-------------------------
 The schema definition of this node
 
 
-walkerNode.docPath
-------------------
+MonoxideWalkerNode.docPath
+--------------------------
 The segmented array path to the node within the doc object
 
 
-walkerNode.schemaPath
----------------------
+MonoxideWalkerNode.schemaPath
+-----------------------------
 The segmented array path to the schema node
 
 
-walkerNode.replace(newValue)
-----------------------------
+MonoxideWalkerNode.replace(newValue)
+------------------------------------
 A function that can be called as `(newValue)` which will replace the current value of the value if called
 
 
-walkerNode.remove()
--------------------
+MonoxideWalkerNode.remove()
+---------------------------
 A function taht can be called as `()` to remove this node from the output
 
 
 Plugins
 =======
 Monoxide is based around its plugins.
-Each is applied either globally by setting `monoxide.settings.collections.plugins` or individually to collections using `monoxide.collections.COLLECTION.use(plugins...)`.
+Each is applied either globally by setting `monoxide.settings.collections.plugins` or individually to collections using `monoxide.collections.MonoxideCollection.use(plugins...)`.
 
 
 The following are a list of built-in plugins and their options.

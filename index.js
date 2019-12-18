@@ -64,7 +64,7 @@ function Monoxide() {
 		Cursor: require('./lib/cursor'),
 		Document: require('./lib/document'),
 		Defer: require('./lib/defer'),
-		QueryBuilder: require('./lib/queryBuilder'),
+		Query: require('./lib/query'),
 		Scenario: require('./lib/scenario'),
 		Schema: require('./lib/schema'),
 		Rest: require('./lib/rest'),
