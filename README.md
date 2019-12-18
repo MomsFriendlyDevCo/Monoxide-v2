@@ -402,8 +402,10 @@ The return value of a monoxide query.
 document.$each(path, func, options)
 -----------------------------------
 Iterate down a document schema path running a function on all matching endpoints.
-The function is called as `(docNode, schemaNode, docPath, schemaPath, doc)` and can return a promise which will be waited on.
+The function is called as `(WalkerNode)` and can return a promise which will be waited on.
 Returns a Promise.
+
+See [walkerNode](#walkerNode) for the definition of the single parameter (and context) passed to the function.
 
 
 document.$get(path)
@@ -427,11 +429,24 @@ Note: Unlike `document.$each` this does not resolve relative to the schema path,
 Returns a Promise.
 
 
-document.$toObject()
---------------------
+document.$setMany(path, value)
+------------------------------
+Set all matching endpoints within a document via a schema path, this will "branch" down array schema types and may potencially set multiple endpoints.
+If given a single object this function will treat all keys as dotted notation items to set individually.
+Returns a Promise.
+
+
+document.$toObject(patch)
+-------------------------
 Convert the curent MonoxideDocument to a plain object.
+An additional patch object can be specified which calls `clonedDoc.$setMany(patch)` automatically with additional fields to set.
 This will resolve all virtuals and value keys.
 Returns a Promise.
+
+
+document.$clone()
+-----------------
+Deep clone an object which is safe for mutation. This function is mainly used for internal purposes.
 
 
 document.$create()
@@ -468,3 +483,38 @@ Returns a Promise.
 document.save(patch)
 --------------------
 Alias of `document.$save()` if no naming conflicts occur within the data.
+
+
+walkerNode
+----------
+The single object passed to the function on each discovered endpoint by the [document.$each](#document.$each) function.
+
+
+walkerNode.value
+----------------
+The current data value while traversing
+
+
+walkerNode.schema
+-----------------
+The schema definition of this node
+
+
+walkerNode.docPath
+------------------
+The segmented array path to the node within the doc object
+
+
+walkerNode.schemaPath
+---------------------
+The segmented array path to the schema node
+
+
+walkerNode.replace(newValue)
+----------------------------
+A function that can be called as `(newValue)` which will replace the current value of the value if called
+
+
+walkerNode.remove()
+-------------------
+A function taht can be called as `()` to remove this node from the output

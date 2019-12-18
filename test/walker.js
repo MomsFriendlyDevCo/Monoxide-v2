@@ -15,9 +15,7 @@ describe('monoxide.classes.Walker', function() {
 			monoxide,
 			{name: 'Acme', junkData: 123},
 			{name: {$: true, type: 'string'}},
-			(docNode, schemaNode, docPath, schemaPath) => {
-				nodes.push([docPath.join('.'), schemaPath.join('.'), docNode])
-			}
+			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
 		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['name', 'name', 'Acme'],
@@ -53,9 +51,7 @@ describe('monoxide.classes.Walker', function() {
 					},
 				},
 			},
-			(docNode, schemaNode, docPath, schemaPath) => {
-				nodes.push([docPath.join('.'), schemaPath.join('.'), docNode])
-			}
+			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
 		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['name', 'name', 'Acme'],
@@ -70,9 +66,12 @@ describe('monoxide.classes.Walker', function() {
 	it('should walk down all endpoints in the (very basic) companies schema', ()=> {
 		var nodes = [];
 
-		return new monoxide.classes.Walker(monoxide, {name: 'Acme', junkData: 123}, monoxide.collections.companies.schema, (docNode, schemaNode, docPath, schemaPath) => {
-			nodes.push([docPath.join('.'), schemaPath.join('.'), docNode])
-		}).then(()=> {
+		return new monoxide.classes.Walker(
+			monoxide,
+			{name: 'Acme', junkData: 123},
+			monoxide.collections.companies.schema,
+			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
+		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['name', 'name', 'Acme'],
 			]);
@@ -95,9 +94,12 @@ describe('monoxide.classes.Walker', function() {
 	it('should walk down all endpoints in the user schema', ()=> {
 		var nodes = [];
 
-		return new monoxide.classes.Walker(monoxide, testUser, monoxide.collections.users.schema, (docNode, schemaNode, docPath, schemaPath) => {
-			nodes.push([docPath.join('.'), schemaPath.join('.'), docNode])
-		}).then(()=> {
+		return new monoxide.classes.Walker(
+			monoxide,
+			testUser,
+			monoxide.collections.users.schema,
+			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
+		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['company', 'company', undefined],
 				['name', 'name', undefined],
@@ -123,9 +125,13 @@ describe('monoxide.classes.Walker', function() {
 	it('should filter by a simple top-level path', ()=> {
 		var nodes = [];
 
-		return new monoxide.classes.Walker(monoxide, testUser, monoxide.collections.users.schema, (docNode, schemaNode, docPath, schemaPath) => {
-			nodes.push([docPath.join('.'), schemaPath.join('.'), docNode])
-		}, {path: 'role'}).then(()=> {
+		return new monoxide.classes.Walker(
+			monoxide,
+			testUser,
+			monoxide.collections.users.schema,
+			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
+			{path: 'role'},
+		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['role', 'role', 'user'],
 			]);
@@ -135,9 +141,13 @@ describe('monoxide.classes.Walker', function() {
 	it('should filter by a specific object path', ()=> {
 		var nodes = [];
 
-		return new monoxide.classes.Walker(monoxide, testUser, monoxide.collections.users.schema, (docNode, schemaNode, docPath, schemaPath) => {
-			nodes.push([docPath.join('.'), schemaPath.join('.'), docNode])
-		}, {path: 'settings'}).then(()=> {
+		return new monoxide.classes.Walker(
+			monoxide,
+			testUser,
+			monoxide.collections.users.schema,
+			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
+			{path: 'settings'},
+		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['settings.lang', 'settings.lang', undefined],
 				['settings.greeting', 'settings.greeting', undefined],
@@ -148,9 +158,13 @@ describe('monoxide.classes.Walker', function() {
 	it('should filter by a specific object path #2', ()=> {
 		var nodes = [];
 
-		return new monoxide.classes.Walker(monoxide, testUser, monoxide.collections.users.schema, (docNode, schemaNode, docPath, schemaPath) => {
-			nodes.push([docPath.join('.'), schemaPath.join('.'), docNode])
-		}, {path: 'settings.lang'}).then(()=> {
+		return new monoxide.classes.Walker(
+			monoxide,
+			testUser,
+			monoxide.collections.users.schema,
+			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
+			{path: 'settings.lang'},
+		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['settings.lang', 'settings.lang', undefined],
 			]);
@@ -160,9 +174,13 @@ describe('monoxide.classes.Walker', function() {
 	it('should filter by an array path', ()=> {
 		var nodes = [];
 
-		return new monoxide.classes.Walker(monoxide, testUser, monoxide.collections.users.schema, (docNode, schemaNode, docPath, schemaPath) => {
-			nodes.push([docPath.join('.'), schemaPath.join('.'), docNode])
-		}, {path: 'mostPurchased'}).then(()=> {
+		return new monoxide.classes.Walker(
+			monoxide,
+			testUser,
+			monoxide.collections.users.schema,
+			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
+			{path: 'mostPurchased'},
+		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['mostPurchased.0.number', 'mostPurchased.number', 100],
 				['mostPurchased.0.widget', 'mostPurchased.widget', 'widget100'],
@@ -175,9 +193,13 @@ describe('monoxide.classes.Walker', function() {
 	it('should filter by an array path #2', ()=> {
 		var nodes = [];
 
-		return new monoxide.classes.Walker(monoxide, testUser, monoxide.collections.users.schema, (docNode, schemaNode, docPath, schemaPath) => {
-			nodes.push([docPath.join('.'), schemaPath.join('.'), docNode])
-		}, {path: 'mostPurchased.number'}).then(()=> {
+		return new monoxide.classes.Walker(
+			monoxide,
+			testUser,
+			monoxide.collections.users.schema,
+			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
+			{path: 'mostPurchased.number'},
+		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['mostPurchased.0.number', 'mostPurchased.number', 100],
 				['mostPurchased.1.number', 'mostPurchased.number', 200],
