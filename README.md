@@ -455,6 +455,13 @@ Note: Unlike `document.$each` this does not resolve relative to the schema path,
 Returns a Promise.
 
 
+document.$unset(path)
+---------------------
+Remove a key value via a dotted notation path.
+Note: Unlike `document.$each` this does not resolve relative to the schema path, just the plain object.
+Returns a Promise.
+
+
 document.$setMany(path, value)
 ------------------------------
 Set all matching endpoints within a document via a schema path, this will "branch" down array schema types and may potencially set multiple endpoints.
