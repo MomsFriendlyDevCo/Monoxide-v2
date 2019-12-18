@@ -18,6 +18,16 @@ function Monoxide() {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 		},
+		collections: {
+			plugins: [
+				'nodeTypeOid',
+			],
+		},
+		plugins: {
+			paths: [
+				`${__dirname}/plugins`,
+			],
+		},
 		serve: {
 			param: 'id',
 			countParam: 'count',

@@ -191,11 +191,16 @@ Settings object used by Monoxide.
 | `connection`                | `Object` | See below        | Connection defaults, see notes      |
 | `connection.appname`        | `string` | `"monoxide"`     | Internal app name, used for logging |
 | `connection.promiseLibrary` | `Object` | `global.Promise` | Promise implementation to use       |
+| `collections.plugins`       | `array <string|Object>` | See notes | Default plugins and config to load on all collections |
+| `plugins`                   | `Object` | See below        | Plugin confirguation                |
+| `plugins.paths`             | `array <string>` | `./plugins` | Default paths to search when loading plugins from strings |
 
 
 **Notes:**
 * `connection.appname` should be set to a locally identifiable unique string for logging purposes
 * All depreciated functionality is disabled by default (`useNewUrlParser: true` + `useUnifiedTopology: true`) so no depreciation warnings are thrown on connect
+* Plugins are loaded in the similar form to Babel in that they can be a simple string (`['foo', 'bar', 'baz']`) or an array + Object settings (`['foo', ['bar', {barOption: ...}], 'baz', {bazOption1: 1, bazOption2: 2}]`)
+* The default plugin list is subject to change, read the source code for the full default list
 
 
 
