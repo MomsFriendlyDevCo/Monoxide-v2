@@ -10,17 +10,17 @@ describe('monoxide.classes.Schema', function() {
 			name: String,
 			type: 'string',
 			settings: {
-				language: {type: String},
+				language: {type: String, junk1: 1},
 				greeting: {
 					casual: 'string',
-					formal: String,
+					formal: {type: String, junk2: 2},
 				},
 			},
 			favouriteColors: [String],
-			favouriteWords: [{type: 'string'}],
+			favouriteWords: [{type: 'string', junk3: 3}],
 			favouriteWidgets: [{
 				number: Number,
-				name: String,
+				name: {type: String, junk4: 4},
 			}],
 		};
 
@@ -28,10 +28,10 @@ describe('monoxide.classes.Schema', function() {
 			name: {type: 'string'},
 			type: {type: 'string'},
 			settings: {
-				language: {type: 'string'},
+				language: {type: 'string', junk1: 1},
 				greeting: {
 					casual: {type: 'string'},
-					formal: {type: 'string'},
+					formal: {type: 'string', junk2: 2},
 				},
 			},
 			favouriteColors: {
@@ -42,14 +42,14 @@ describe('monoxide.classes.Schema', function() {
 			favouriteWords: {
 				type: 'array',
 				arrayType: 'scalar',
-				items: {type: 'string'},
+				items: {type: 'string', junk3: 3},
 			},
 			favouriteWidgets: {
 				type: 'array',
 				arrayType: 'collection',
 				items: {
 					number: {type: 'number'},
-					name: {type: 'string'},
+					name: {type: 'string', junk4: 4},
 				},
 			},
 		};
