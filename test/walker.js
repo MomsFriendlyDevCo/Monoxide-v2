@@ -72,7 +72,7 @@ describe('monoxide.classes.Walker', function() {
 			monoxide.collections.companies.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
 		).then(()=> {
-			expect(_.sortBy(nodes, 0)).ordered.to.deep.equal([
+			expect(nodes).ordered.to.deep.equal([
 				['_id', '_id', undefined],
 				['name', 'name', 'Acme'],
 			]);
@@ -101,7 +101,7 @@ describe('monoxide.classes.Walker', function() {
 			monoxide.collections.users.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
 		).then(()=> {
-			expect(_.sortBy(nodes, 0)).to.deep.equal([
+			expect(_.sortBy(nodes)).to.deep.equal([
 				['_id', '_id', undefined],
 				['_password', '_password', undefined],
 				['company', 'company', undefined],
