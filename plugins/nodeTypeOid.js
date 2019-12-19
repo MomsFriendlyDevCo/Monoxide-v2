@@ -41,16 +41,15 @@ module.exports = function MonoxidePluginNodeTypeOid(o, collection, options) {
 		});
 	// }}}
 
-	// Stringify ObjectIDs => String when fetching from Mongo {{{
-	if (settings.stringify)
-		collection.on('docNode:oid', node => {
-			if (node.value === undefined) { // Generate a new OID if its missing
-				node.replace((new ObjectID()).toString());
-			} else if (node.value instanceof ObjectID) { // If its an OID already - splat to a string
-				node.replace(node.value.toString());
-				if (debugDetail.enabled) debugDetail('Plugin:NodeTypeOid stringified OID for ID', node.doc._id, 'for path', node.docPath.join('.'), '=', node.value.toString());
-			}
-		});
+	// Stringify ObjectIDs => String when fetching from Mongo AND populate empty OID types {{{
+	collection.on('docNode:oid', node => {
+		if (node.value === undefined) { // Generate a new OID if its missing
+			node.replace(settings.stringify ? (new ObjectID()).toString() : new ObjectID());
+		} else if (settings.stringify && node.value instanceof ObjectID) { // If its an OID already - splat to a string
+			node.replace(node.value.toString());
+			if (debugDetail.enabled) debugDetail('Plugin:NodeTypeOid stringified OID for ID', node.doc._id, 'for path', node.docPath.join('.'), '=', node.value.toString());
+		}
+	});
 	// }}}
 
 	// Transform String OIDs back into ObjecID instances when we are resolving {{{
