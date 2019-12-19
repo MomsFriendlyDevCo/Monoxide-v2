@@ -25,8 +25,9 @@ function Monoxide() {
 		},
 		collections: {
 			plugins: [
-				'nodeTypeOid',
+				'collectionRevision',
 				'nodePropDefault',
+				'nodeTypeOid',
 			],
 		},
 		plugins: {

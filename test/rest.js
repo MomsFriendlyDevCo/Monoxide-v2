@@ -80,7 +80,7 @@ describe('monoxide.classes.Rest', function() {
 	var newMovie;
 	it('should create a new movie', ()=>
 		axios.post(`${url}/api/movies`, {
-			title: 'monoxide: Electric Boogaloo',
+			title: 'Monoxide: Electric Boogaloo',
 			year: 2119,
 			info: {
 				directors: ['Alan Smithee'],
