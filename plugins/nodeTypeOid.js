@@ -28,7 +28,14 @@ module.exports = function MonoxidePluginNodeTypeOid(o, collection, options) {
 			settings.autoCreate.forEach(path => {
 				if (!_.has(collection.schema, path)) {
 					debug('Plugin:NodeTypeOid Auto create OID node', `${collection.name}.${_.isString(path) ? path : path.join('.')}`);
-					_.set(collection.schema, path, o.classes.Schema.mkTypeDef(settings.autoCreatePrototype));
+					if (path.startsWith('_') && !/\./.test(path)) { // Hack to make it so that top level "_*" items float to the start
+						collection.schema = {
+							[path]: o.classes.Schema.mkTypeDef(settings.autoCreatePrototype),
+							...collection.schema,
+						};
+					} else {
+						_.set(collection.schema, path, o.classes.Schema.mkTypeDef(settings.autoCreatePrototype));
+					}
 				}
 			});
 		});
