@@ -100,6 +100,7 @@ describe('monoxide.classes.Walker', function() {
 			testUser,
 			monoxide.collections.users.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
+			{arrays: false},
 		).then(()=> {
 			expect(_.sortBy(nodes)).to.deep.equal([
 				['_id', '_id', undefined],
@@ -132,7 +133,7 @@ describe('monoxide.classes.Walker', function() {
 			testUser,
 			monoxide.collections.users.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
-			{path: 'role'},
+			{path: 'role', arrays: false},
 		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['role', 'role', 'user'],
@@ -148,7 +149,7 @@ describe('monoxide.classes.Walker', function() {
 			testUser,
 			monoxide.collections.users.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
-			{path: 'settings'},
+			{path: 'settings', arrays: false},
 		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['settings.lang', 'settings.lang', undefined],
@@ -165,7 +166,7 @@ describe('monoxide.classes.Walker', function() {
 			testUser,
 			monoxide.collections.users.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
-			{path: 'settings.lang'},
+			{path: 'settings.lang', arrays: false},
 		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['settings.lang', 'settings.lang', undefined],
@@ -181,7 +182,7 @@ describe('monoxide.classes.Walker', function() {
 			testUser,
 			monoxide.collections.users.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
-			{path: 'mostPurchased'},
+			{path: 'mostPurchased', arrays: false},
 		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['mostPurchased.0.number', 'mostPurchased.number', 100],
@@ -200,7 +201,7 @@ describe('monoxide.classes.Walker', function() {
 			testUser,
 			monoxide.collections.users.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
-			{path: 'mostPurchased.number'},
+			{path: 'mostPurchased.number', arrays: false},
 		).then(()=> {
 			expect(nodes).to.deep.equal([
 				['mostPurchased.0.number', 'mostPurchased.number', 100],
