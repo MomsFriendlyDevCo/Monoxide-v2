@@ -236,6 +236,8 @@ A collection can have the following emitted events (trappable via [eventer liste
 
 | Event              | Arguments              | Description                                                                                          |
 |--------------------|------------------------|------------------------------------------------------------------------------------------------------|
+| `loading`          | `()`                   | Emitted when a collection is being first loaded                                                      |
+| `schema`           | `(schema)`             | Emitted when a schema is about to be processed                                                       |
 | `doc`              | `(MonoxideDocument)`   | Emitted when a new MonoxideDocument instance is created for this collection                          |
 | `docNode`          | `(MonoxideWalkerNode)` | Emitted when iterating through a document after `doc` has been created                               |
 | `docNode:TYPE`     | `(MonoxideWalkerNode)` | Emitted when iterating through a document after `doc` has been created, matches a specific node type |
@@ -244,8 +246,8 @@ A collection can have the following emitted events (trappable via [eventer liste
 | `resolveNode`      | `(MonoxideWalkerNode)` | Emitted when iterating individual nodes during a resolve operation                                   |
 | `resolveNode:TYPE` | `(MonoxideWalkerNode)` | As with `resolveNode` but for specific schema types                                                  |
 | `resolved`         | `(MonoxideDocument)`   | Emitted after all resolve emitters have finished                                                     |
-| `save`             | `(MonoxideDocument)`   | Emitted before any save operation                                                                    |
-| `saved`            | `(MonoxideDocument)`   | Emitted after any save operation                                                                     |
+| `save`             | `(MonoxideDocument)`   | Emitted before any create or save operation                                                          |
+| `saved`            | `(MonoxideDocument)`   | Emitted after any create / save operation                                                            |
 | `ready`            | `()`                   | Emitted when a collcection has fully loaded, also trappable via the monoxide event 'collection'      |
 
 
