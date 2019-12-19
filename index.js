@@ -28,6 +28,7 @@ function Monoxide() {
 				'collectionRevision',
 				'nodePropDefault',
 				'nodeTypeOid',
+				'nodeTypePrimatives',
 			],
 		},
 		plugins: {

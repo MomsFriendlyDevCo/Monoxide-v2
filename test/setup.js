@@ -55,7 +55,7 @@ var setup = module.exports = {
 					widget: {type: 'pointer', ref: 'widgets', index: true},
 				}],
 				widgets: [{type: 'pointer', ref: 'widgets', index: true}],
-				favourite: {
+				favourite: { // Intentionally has no defaulting children
 					color: {type: 'string'},
 					animal: {type: 'string'},
 					widget: {type: 'pointer', ref: 'widgets', index: true},

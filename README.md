@@ -474,6 +474,11 @@ Note: Unlike `document.$each` this does not resolve relative to the schema path,
 Returns a boolean indicating if that path exists.
 
 
+MonoxideDocument.$isModified(path)
+----------------------------------
+Return a boolean indicating whether either any part of the document has been modified (if path is empty) or whether a specific path has been changed.
+
+
 MonoxideDocument.$set(path, value)
 ----------------------------------
 Set the value of a dotted notation path, evaluating the value if its a promise.
