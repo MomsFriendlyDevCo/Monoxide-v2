@@ -31,10 +31,10 @@ describe('plugin:collectionRevision', function() {
 				expect(docs).to.be.an('array');
 				expect(docs).to.have.length(3);
 
-				// No doc should have a revision other than the base value of `0`
+				// No doc should have a revision other than the base value of `1`
 				docs.forEach((doc, docIndex) => {
 					expect(doc).to.have.property('finalEdits', docIndex);
-					expect(doc).to.have.property('__v', 0);
+					expect(doc).to.have.property('__v', 1);
 				});
 
 				return docs;
@@ -49,15 +49,15 @@ describe('plugin:collectionRevision', function() {
 				expect(docs).to.have.length(3);
 
 				expect(docs[0]).to.have.property('finalEdits', 0);
-				expect(docs[0]).to.have.property('__v', 0);
+				expect(docs[0]).to.have.property('__v', 1);
 
 				expect(docs[1]).to.have.property('finalEdits', 1);
 				expect(docs[1]).to.have.property('data', 200);
-				expect(docs[1]).to.have.property('__v', 1);
+				expect(docs[1]).to.have.property('__v', 2);
 
 				expect(docs[2]).to.have.property('finalEdits', 2); // Not yet at the final edit though
 				expect(docs[2]).to.have.property('data', 300);
-				expect(docs[2]).to.have.property('__v', 1);
+				expect(docs[2]).to.have.property('__v', 2);
 
 				return docs;
 			})
@@ -67,15 +67,15 @@ describe('plugin:collectionRevision', function() {
 				expect(docs).to.have.length(3);
 
 				expect(docs[0]).to.have.property('finalEdits', 0);
-				expect(docs[0]).to.have.property('__v', 0);
+				expect(docs[0]).to.have.property('__v', 1);
 
 				expect(docs[1]).to.have.property('finalEdits', 1);
 				expect(docs[1]).to.have.property('data', 200);
-				expect(docs[1]).to.have.property('__v', 1);
+				expect(docs[1]).to.have.property('__v', 2);
 
 				expect(docs[2]).to.have.property('finalEdits', 2); // Not yet at the final edit though
 				expect(docs[2]).to.have.property('data', 300);
-				expect(docs[2]).to.have.property('__v', 1);
+				expect(docs[2]).to.have.property('__v', 2);
 
 				return docs;
 			})
@@ -90,13 +90,13 @@ describe('plugin:collectionRevision', function() {
 				expect(docs).to.have.length(3);
 
 				expect(docs[0]).to.have.property('finalEdits', 0);
-				expect(docs[0]).to.have.property('__v', 0);
+				expect(docs[0]).to.have.property('__v', 1);
 
 				expect(docs[1]).to.have.property('finalEdits', 1);
-				expect(docs[1]).to.have.property('__v', 1);
+				expect(docs[1]).to.have.property('__v', 2);
 
 				expect(docs[2]).to.have.property('finalEdits', 2);
-				expect(docs[2]).to.have.property('__v', 2);
+				expect(docs[2]).to.have.property('__v', 3);
 			})
 	);
 
