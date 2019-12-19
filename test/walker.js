@@ -72,7 +72,8 @@ describe('monoxide.classes.Walker', function() {
 			monoxide.collections.companies.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
 		).then(()=> {
-			expect(nodes).to.deep.equal([
+			expect(_.sortBy(nodes, 0)).ordered.to.deep.equal([
+				['_id', '_id', undefined],
 				['name', 'name', 'Acme'],
 			]);
 		});
@@ -100,24 +101,25 @@ describe('monoxide.classes.Walker', function() {
 			monoxide.collections.users.schema,
 			node => nodes.push([node.docPath.join('.'), node.schemaPath.join('.'), node.value]),
 		).then(()=> {
-			expect(nodes).to.deep.equal([
-				['company', 'company', undefined],
-				['name', 'name', undefined],
-				['status', 'status', undefined],
-				['role', 'role', 'user'],
+			expect(_.sortBy(nodes, 0)).to.deep.equal([
+				['_id', '_id', undefined],
 				['_password', '_password', undefined],
+				['company', 'company', undefined],
+				['favourite.animal', 'favourite.animal', 'cat'],
+				['favourite.color', 'favourite.color', undefined],
+				['favourite.widget', 'favourite.widget', undefined],
 				['mostPurchased.0.number', 'mostPurchased.number', 100],
 				['mostPurchased.0.widget', 'mostPurchased.widget', 'widget100'],
 				['mostPurchased.1.number', 'mostPurchased.number', 200],
 				['mostPurchased.1.widget', 'mostPurchased.widget', undefined],
+				['name', 'name', undefined],
+				['role', 'role', 'user'],
+				['settings.greeting', 'settings.greeting', undefined],
+				['settings.lang', 'settings.lang', undefined],
+				['status', 'status', undefined],
 				['widgets.0', 'widgets', 'widget300'],
 				['widgets.1', 'widgets', 'widget400'],
 				['widgets.2', 'widgets', 'widget500'],
-				['favourite.color', 'favourite.color', undefined],
-				['favourite.animal', 'favourite.animal', 'cat'],
-				['favourite.widget', 'favourite.widget', undefined],
-				['settings.lang', 'settings.lang', undefined],
-				['settings.greeting', 'settings.greeting', undefined],
 			]);
 		});
 	});
