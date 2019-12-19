@@ -54,7 +54,7 @@ module.exports = function MonoxidePluginNodeTypeOid(o, collection, options) {
 
 	// Transform String OIDs back into ObjecID instances when we are resolving {{{
 	collection.on('resolveNode:oid', node => {
-		if (!node.value instanceof ObjectID) {
+		if (!(node.value instanceof ObjectID)) {
 			node.replace(new ObjectID(node.value));
 			if (debugDetail.enabled) debugDetail('Plugin:NodeTypeOid resolved OID for ID', node.doc._id, 'for path', node.docPath.join('.'), 'to', node.value);
 		}
