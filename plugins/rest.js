@@ -178,7 +178,16 @@ module.exports = function MonoxideRestServe(o, collection, options) {
 						case 'save': return collection.updateOne({
 								[settings.searchId]: req.params[settings.param],
 							}, req.body)
-							.catch(e => settings.errorHandler(res, 400, e))
+							.catch(e => {
+								if (e == 'Document not found when performing update') {
+									debug(`Document ID "${req.params[settings.param]}" found when performing update`);
+									return settings.errorHandler(res, 404, e);
+								} else {
+									debug(`Failed to update document "${req.params[settings.param]}" - ${e.toString()}`);
+									console.log(e);
+									return settings.errorHandler(res, 400, e);
+								}
+							})
 
 						case 'create': return collection.create(req.body)
 							.catch(e => settings.errorHandler(res, 400, e))
@@ -188,6 +197,7 @@ module.exports = function MonoxideRestServe(o, collection, options) {
 							})
 							.then(()=> undefined)
 							.catch(e => settings.errorHandler(res, 400, e))
+
 						default:
 							throw new Error(`Unsupported queryMethod "${queryMethod}"`);
 					}

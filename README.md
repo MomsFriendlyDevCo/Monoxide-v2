@@ -285,6 +285,24 @@ Delete all docs matching the given query.
 Returns a promise.
 
 
+MonoxideCollection.updateOne(query, patch)
+------------------------------------------
+Update the first document matching the given query with patch data.
+Returns a promise with the updated MonoxideDocument.
+
+
+MonoxideCollection.updateOneById(id, patch)
+-------------------------------------------
+Update a single document by its ID with patch data.
+Returns a promise with the updated MonoxideDocument.
+
+
+MonoxideCollection.updateMany(query, patch)
+-------------------------------------------
+Update all docs matching the given query with patch data.
+Returns a promise (no data is returned).
+
+
 MonoxideCollection.find(query)
 ------------------------------
 Create a QueryBuilder instance with an initially populated query.

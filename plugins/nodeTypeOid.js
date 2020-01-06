@@ -70,7 +70,7 @@ module.exports = function MonoxidePluginNodeTypeOid(o, collection, options) {
 			)
 			.forEach(k => { // Rewrite into ObjectID
 				if (typeof q.$match[k] == 'string') { // Direct equals as a string
-					debug('Rewrite query of path', k, 'into OID');
+					debug('Rewrite query of path', k, 'into OID for', q.$match[k]);
 					q.$match[k] = ObjectID(q.$match[k]);
 				} else if (_.isArray(q.$match[k])) { // $in wrapper
 					debug('Rewrite array $in query of path', k, 'into OID');
