@@ -13,7 +13,6 @@ describe('monoxide.create() / monoxide.model[].create()', function() {
 		monoxide.collections.widgets
 			.find()
 			.sort('name')
-			.lean()
 			.then(res => {
 				expect(res).to.be.an('array');
 				expect(res).to.have.length(3);
