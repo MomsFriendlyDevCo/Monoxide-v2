@@ -1,4 +1,4 @@
-var debugDetail = require('debug')('monoxide:detail');
+var debug = require('debug')('monoxide:plugin:collectionRevision');
 
 /**
 * Monoxide collection revision plugin
@@ -26,7 +26,7 @@ module.exports = function MonoxidePluginCollectionRevision(o, collection, option
 	});
 
 	collection.on('save', doc => {
-		if (debugDetail.enabled) debugDetail('Plugin:CollectionRevision Bump revision for', doc.$collection.name, '/', doc._id, 'from', doc.$get(settings.revisionPath), '=>', settings.incrementor(doc.$get(settings.revisionPath)));
+		if (debug.enabled) debug('Bump revision for', doc.$collection.name, '/', doc._id, 'from', doc.$get(settings.revisionPath), '=>', settings.incrementor(doc.$get(settings.revisionPath)));
 
 		return Promise.resolve(doc.$get(settings.revisionPath))
 			.then(val => settings.incrementor(val))

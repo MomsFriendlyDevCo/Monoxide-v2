@@ -1,6 +1,5 @@
 var _ = require('lodash');
-var debug = require('debug')('monoxide');
-var debugDetail = require('debug')('monoxide:detail');
+var debug = require('debug')('monoxide:plugin:rest');
 
 /**
 * Monoxide ReST server
@@ -73,7 +72,7 @@ module.exports = function MonoxideRestServe(o, collection, options) {
 
 		var removeMetaParams = query => _.omit(query, ['limit', 'select', 'skip', 'sort']);
 
-		debugDetail('Setup ReST middleware for collection', collection.name);
+		debug('Setup ReST middleware for collection', collection.name);
 		return (req, res) => {
 			var serverMethod;
 
@@ -148,7 +147,7 @@ module.exports = function MonoxideRestServe(o, collection, options) {
 				// }}}
 				// Execute function and return (main query handler - GET, POST etc.) {{{
 				.then(()=> {
-					debugDetail('Perform ReST', {
+					debug('Perform ReST', {
 						serverMethod,
 						[settings.searchId]: req.params[settings.param],
 					});
@@ -197,14 +196,13 @@ module.exports = function MonoxideRestServe(o, collection, options) {
 				// End {{{
 				.then(output => output == res ? res.end() : res.send(output)) // Send output if Express has not already terminated
 				.catch(e => {
-					debugDetail('ReST query failed with', e);
+					debug('ReST query failed with', e);
 					settings.errorHandler(res, 400, e)
 				})
 				// }}}
 		};
 	};
 	// }}}
-
 
 	// o.serve {{{
 	/**

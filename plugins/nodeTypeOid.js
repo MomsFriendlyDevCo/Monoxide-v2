@@ -1,6 +1,5 @@
 var _ = require('lodash');
-var debug = require('debug')('monoxide');
-var debugDetail = require('debug')('monoxide:detail');
+var debug = require('debug')('monoxide:plugin:nodeTypeOid');
 var ObjectID = require('mongodb').ObjectID;
 
 /**
@@ -27,7 +26,7 @@ module.exports = function MonoxidePluginNodeTypeOid(o, collection, options) {
 		collection.on('ready', ()=> {
 			settings.autoCreate.forEach(path => {
 				if (!_.has(collection.schema, path)) {
-					debug('Plugin:NodeTypeOid Auto create OID node', `${collection.name}.${_.isString(path) ? path : path.join('.')}`);
+					debug('Auto create OID node', `${collection.name}.${_.isString(path) ? path : path.join('.')}`);
 					if (path.startsWith('_') && !/\./.test(path)) { // Hack to make it so that top level "_*" items float to the start
 						collection.schema = {
 							[path]: o.classes.Schema.mkTypeDef(settings.autoCreatePrototype),
@@ -47,7 +46,7 @@ module.exports = function MonoxidePluginNodeTypeOid(o, collection, options) {
 			node.replace(settings.stringify ? (new ObjectID()).toString() : new ObjectID());
 		} else if (settings.stringify && node.value instanceof ObjectID) { // If its an OID already - splat to a string
 			node.replace(node.value.toString());
-			if (debugDetail.enabled) debugDetail('Plugin:NodeTypeOid stringified OID for ID', node.doc._id, 'for path', node.docPath.join('.'), '=', node.value.toString());
+			if (debug.enabled) debug('Stringified OID for ID', node.doc._id, 'for path', node.docPath.join('.'), '=', node.value.toString());
 		}
 	});
 	// }}}
@@ -56,7 +55,7 @@ module.exports = function MonoxidePluginNodeTypeOid(o, collection, options) {
 	collection.on('resolveNode:oid', node => {
 		if (!(node.value instanceof ObjectID)) {
 			node.replace(new ObjectID(node.value));
-			if (debugDetail.enabled) debugDetail('Plugin:NodeTypeOid resolved OID for ID', node.doc._id, 'for path', node.docPath.join('.'), 'to', node.value);
+			if (debug.enabled) debug('Resolved OID for ID', node.doc._id, 'for path', node.docPath.join('.'), 'to', node.value);
 		}
 	});
 	// }}}

@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var debugDetail = require('debug')('monoxide:detail');
+var debug = require('debug')('monoxide:plugin:nodePropDefault');
 
 /**
 * Monoxide collection plugin
@@ -20,7 +20,7 @@ module.exports = function MonoxidePluginStringOIDs(o, collection, options) {
 		if (node.schema.default !== undefined && node.value === undefined) {
 			return Promise.resolve(_.isFunction(node.schema.default) ? node.schema.default(node) : node.schema.default)
 				.then(res => {
-					if (debugDetail.enabled) debugDetail('Plugin:NodePropDefault assigned default value for ID', node.doc._id, 'for prop', node.docPath.join('.'), '=', res, _.isFunction(node.schema.default) && '(via function return)');
+					if (debug.enabled) debug('Assigned default value for ID', node.doc._id, 'for prop', node.docPath.join('.'), '=', res, _.isFunction(node.schema.default) && '(via function return)');
 					return node.replace(res);
 				})
 		}

@@ -1,6 +1,5 @@
 var _ = require('lodash');
-var debug = require('debug')('monoxide');
-var debugDetail = require('debug')('monoxide:detail');
+var debug = require('debug')('monoxide:plugin:primatives');
 
 /**
 * Monoxide collection plugin
