@@ -59,4 +59,26 @@ module.exports = function MonoxidePluginNodeTypeOid(o, collection, options) {
 		}
 	});
 	// }}}
+
+	// Transform query path strings into OIDs {{{
+	collection.on('aggregate', q => {
+		if (_.isEmpty(q.$match)) return; // Nothing to do
+		Object.keys(q.$collection.schema)
+			.filter(k =>
+				q.$match[k] // Path is present in the query
+				&& q.$collection.schema[k].type == 'oid' // Its an OID type
+			)
+			.forEach(k => { // Rewrite into ObjectID
+				if (typeof q.$match[k] == 'string') { // Direct equals as a string
+					debug('Rewrite query of path', k, 'into OID');
+					q.$match[k] = ObjectID(q.$match[k]);
+				} else if (_.isArray(q.$match[k])) { // $in wrapper
+					debug('Rewrite array $in query of path', k, 'into OID');
+					q.$match[k] = {
+						$in: q.$match[k].map(i => typeof i == 'string' ? ObjectID(i) : i),
+					};
+				}
+			})
+	});
+	// }}}
 };

@@ -250,6 +250,7 @@ A collection can have the following emitted events (trappable via [eventer liste
 | `resolved`         | `(MonoxideDocument)`   | Emitted after all resolve emitters have finished                                                     |
 | `save`             | `(MonoxideDocument)`   | Emitted before any create or save operation                                                          |
 | `saved`            | `(MonoxideDocument)`   | Emitted after any create / save operation                                                            |
+| `aggregate`        | `(queryOpts)`          | Emitted before an aggregation operation                                                              |
 | `ready`            | `()`                   | Emitted when a collcection has fully loaded, also trappable via the monoxide event 'collection'      |
 
 
@@ -640,6 +641,11 @@ Plugin configuration:
 | `stringify` | `boolean` | `true`  | Flatten all OIDs into plain strings automatically |
 
 See the [testkit](./test/pluginNodeTypeOid.js) for more examples.
+
+
+**NOTES**:
+
+* Due to the extreme complexity of query combinations factored against the time cost this plugin will only rewrite query keys on the top-level and only for direct equals and simple arrays. e.g. `{_id: '123'}` and `{_id: ['123']}` will be rewritten as ObjectID queries whereas `{_id.$eq: '123'}` or `{_id: {$nin: ['123']}}` will not
 
 
 rest

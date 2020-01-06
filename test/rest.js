@@ -109,7 +109,6 @@ describe('monoxide.classes.Rest', function() {
 	it('should get the movie by its ID', ()=>
 		axios.get(`${url}/api/movies/${newMovie._id}`)
 			.then(res => {
-				console.log('FETCHBYID', newMovie._id, res.data);
 				expect(res.data).to.be.an('object');
 				expect(res.data).to.have.property('_id');
 				expect(res.data).to.have.property('title', 'Monoxide: Electric Boogaloo');
