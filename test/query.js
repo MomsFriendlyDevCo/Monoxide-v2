@@ -52,7 +52,6 @@ describe('monoxide.classes.QueryBuilder', function() {
 				expect(res).to.have.length(7);
 
 				res.forEach(doc => {
-					expect(doc).to.not.have.property('$data');
 					expect(doc).to.not.have.property('$toObject');
 					expect(doc).to.not.have.property('$save');
 				});

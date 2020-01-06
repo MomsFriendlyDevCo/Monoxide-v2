@@ -91,12 +91,14 @@ describe('monoxide.classes.Rest', function() {
 				newMovie = res.data;
 				expect(res.data).to.be.an('object');
 				expect(res.data).to.have.property('_id');
-				expect(res.data).to.have.property('title', 'monoxide: Electric Boogaloo');
+				expect(res.data).to.have.property('title', 'Monoxide: Electric Boogaloo');
 				expect(res.data).to.have.property('year', 2119);
 				expect(res.data).to.have.property('info');
 				expect(res.data.info).to.deep.equal({
 					directors: ['Alan Smithee'],
 					rank: 17,
+					actors: [],
+					genres: [],
 				});
 			})
 			.then(()=> new Promise(resolve => setTimeout(()=> resolve(), 3000)))
@@ -110,7 +112,7 @@ describe('monoxide.classes.Rest', function() {
 				console.log('FETCHBYID', newMovie._id, res.data);
 				expect(res.data).to.be.an('object');
 				expect(res.data).to.have.property('_id');
-				expect(res.data).to.have.property('title', 'monoxide: Electric Boogaloo');
+				expect(res.data).to.have.property('title', 'Monoxide: Electric Boogaloo');
 			})
 	);
 	// }}}
@@ -121,7 +123,7 @@ describe('monoxide.classes.Rest', function() {
 			.then(res => {
 				expect(res.data).to.be.an('object');
 				expect(res.data).to.have.property('_id');
-				expect(res.data).to.have.property('title', 'monoxide: Electric Boogaloo');
+				expect(res.data).to.have.property('title', 'Monoxide: Electric Boogaloo');
 				expect(res.data).to.have.nested.property('info.genres');
 				expect(res.data.info.genres).to.be.deep.equal(['Action', 'Adventure', 'Debugging']);
 			})
