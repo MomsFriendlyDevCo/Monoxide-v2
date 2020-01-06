@@ -75,12 +75,14 @@ var setup = module.exports = {
 			)
 			.virtual('passwordStrength', doc => doc._password ? doc._password.length : 0) // Returns the length of the (badly, see above) hashed password which is an approximate indicator of hash strength
 			.method('greet', doc => `${doc.settings.greeting} ${doc.name}`)
+			.use('nodeTypeOid')
 		// }}}
 
 		// Companies {{{
 		var Companies = monoxide.schema('companies', {
 			name: String,
 		})
+			.use('nodeTypeOid')
 		// }}}
 
 		// Widgets {{{
@@ -91,7 +93,8 @@ var setup = module.exports = {
 			status: {type: 'string', enum: ['active', 'deleted'], default: 'active', index: true},
 			color: {type: 'string', enum: ['red', 'green', 'blue', 'yellow'], default: 'blue', index: true, customArray: [1, 2, 3]},
 			featured: {type: 'boolean', default: false, customObject: {foo: 'Foo!', bar: 'Bar!'}},
-		});
+		})
+			.use('nodeTypeOid')
 		// }}}
 
 		return monoxide.init();
