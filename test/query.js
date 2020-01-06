@@ -111,6 +111,12 @@ describe('monoxide.classes.QueryBuilder', function() {
 			})
 	);
 
+	it('should return null if nothing found during .findOne()', ()=>
+		monoxide.collections.users
+			.findOne({name: 'None existant'})
+			.then(res => expect(res).to.be.null)
+	);
+
 	it('should perform a simple query via .find({status: \'active\'})', ()=>
 		monoxide.collections.users
 			.find({status: 'active'})

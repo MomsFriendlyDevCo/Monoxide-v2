@@ -65,6 +65,7 @@ TODO
 * [x] Plugin: collectionRevision (add revision incrementor)
 * [ ] Plugin: collectionVersion (store document snapshot on save)
 * [ ] Plugin: collectionStatusChange (store when status changes happened)
+* [ ] DOCS: collectionRevision
 
 
 Debugging
@@ -292,11 +293,13 @@ Acts like a promise.
 MonoxideCollection.findOne(query)
 ---------------------------------
 Shorthand for `MonoxideCollection.find(query).one()`.
+If no document is found the result will be `null`.
 
 
 MonoxideCollection.findOneByID(query)
 -------------------------------------
 Shorthand for `MonoxideCollection.find({_id: id}).one()`.
+If no document is found the result will be `null`.
 
 
 MonoxideCollection.count(query)
@@ -372,7 +375,8 @@ Merge the internal query to execute with the provided one.
 
 MonoxideQuery.one()
 -------------------
-Indicate that only the first match should be returned from the query and that the response should be an object rather than an array
+Indicate that only the first match should be returned from the query and that the response should be an object rather than an array.
+If no document is found the result will be `null`.
 
 
 MonoxideQuery.findOne(query)
